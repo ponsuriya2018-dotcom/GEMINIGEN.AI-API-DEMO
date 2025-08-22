@@ -1,0 +1,31 @@
+# GenminiGen AI
+<img src="assets/images/logo.png" alt="GenminiGen AI logo" width="824" />
+
+Geminigen.ai offers AI-generated images and videos from text at a more affordable price compared to other applications on the market. In addition to image and video generation from text, we also provide text-to-speech services and text-based conversation generation.
+
+🌐 Our Website: https://geminigen.ai/
+
+
+## 🚀 Why GeminiGen AI?
+- 🤖 Advanced AI: Use cutting-edge AI technology to generate high-quality content with amazing accuracy.
+
+- ⚡ Fast Generation: Transform your ideas into content in just seconds. No long waiting times.
+
+- 🎨 Unlimited Creativity: Create content in any style, from animation to realistic, from artistic to professional.
+
+- 🖼️ High Quality: Output with high resolution, smooth motion, and sharp details.
+
+- 🤝 Easy Collaboration: Share and collaborate on projects with your team easily.
+
+- 📤 Multi-Format Export: Export content in various formats suitable for all platforms and purposes.
+
+
+## 📚 Documentation
+We provide APIs to generate images/videos. Please follow the instructions below.
+- To try out the photo and video gene APIs visit: [Getting started](https://hoangmanhlong.github.io/geminigen-ai-doc-demo/)
+- Use APIs with the programming languages ​​you use. See how to [integrate API with your language](https://hoangmanhlong.github.io/geminigen-ai-doc-demo/demo.html).
+
+
+## 👋 Contributing
+GeminiGen AI always looking for new contributions. From documentation, contributing to our  reporting a bug; any contribution is valued and welcome. Are you interested in contributing to GeminiGen AI? Read our guide and get started with GeminiGen AI now!
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Get Started</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <div class="logo-fixed">
+    <img src="assets/images/favicon.ico" alt="GeminiGen AI logo" />
+    <span class="logo-text">GeminiGen AI</span>
+  </div>
+  <main class="wrapper">
+    <h1>Get started</h1>
+    <p>
+      If you are new to GeminiGen AI, this section will guide you through
+      getting the necessary data to get started.
+    </p>
+    <p>
+      Follow the tutorial to get you started and learn how GeminiGen AI
+      creates quality images and videos
+    </p>
+
+    <h3>1. Get API key</h3>
+    <p>
+      Make sure you are the one requesting our service by using your API key.
+      Follow the steps below to get your API key:
+    </p>
+    <ul>
+      <li>
+        <p>
+          If you do not have an account, please create an account at
+          <a href="https://geminigen.ai/auth/signup" target="_blank" rel="noopener noreferrer">geminigen.ai</a>.
+        </p>
+      </li>
+      <li>
+        <p>
+          In <b>Profile</b> go to <b>Integration</b> then click
+          <b>Create API key</b> button
+        </p>
+      </li>
+      <li>
+        <p>
+          Take the API key you just created and copy it to the APIs
+          below to try.
+        </p>
+      </li>
+    </ul>
+
+    <h3>2. Try the APIs</h3>
+    <p>
+      We provide some API you can by providing params like API key, prompt,...
+    </p>
+    <h4>AI Image Generator</h4>
+    <p>Create stunning images from text prompts using advanced AI models. Enter your API key and prompt in the box below to generate an image now.</p>
+    <div class="gen-container">
+      <label for="apiKey">API Key</label>
+      <input type="text" id="apiKey" placeholder="Enter your API key" />
+
+      <label for="prompt">Prompt</label>
+      <textarea id="prompt" placeholder="Describe what you want to generate..."></textarea>
+
+      <button id="generateBtn" onclick="generateImage()">Generate</button>
+    </div>
+    <div class="preview" id="imagePreview"></div>
+
+    <h4>AI Video Generator</h4>
+    <p>Create professional videos from text prompts using advanced AI models</p>
+    <p><b style="border-bottom: 1px solid #ffa64d;">Note</b>: make sure you have configured <b>Webhook URL</b> to
+      receive video results. If you don't have a webhook, configure it <a
+        href="https://dev.geminigen.ai/profile/integration/webhook" target="_blank" rel="noopener noreferrer">here</a>.
+      Additionally, your webhook must be designed to receive the correct payload format to receive the most accurate
+      data.
+    </p>
+
+    <h3>3. Integrate API with your language</h3>
+    <p>If you want to integrate with the programming languages you are using, visit <a href="demo.html" target="_blank"
+        rel="noopener noreferrer">the demo</a> for specific instructions.</p>
+  </main>
+
+
+  <script src="js/index.js"></script>
+</body>
+
+</html>

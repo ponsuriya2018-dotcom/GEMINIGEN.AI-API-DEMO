@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Integrate API with your language</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.ico" />
+    <!-- Prism.js CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --bg: #171717;
+        --card: #12182a;
+        --text: #e8ecf2;
+        --muted: #a6afc3;
+        --accent: #6aa3ff;
+        --accent-2: #8ef;
+        --outline: #22314f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .wrapper {
+        max-width: 960px;
+        margin: 56px auto;
+        padding: 0 20px;
+      }
+
+      /* .section{background:linear-gradient(180deg,var(--card),#0f1424); border:1px solid var(--outline); border-radius:20px; padding:28px; box-shadow:0 10px 30px rgba(0,0,0,.35); margin-top:20px} */
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: #0c1222;
+        border: 1px solid var(--outline);
+        padding: 6px 10px;
+        border-radius: 999px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin: 16px 0 10px;
+      }
+
+      p {
+        font-size: 16px;
+        color: var(--muted);
+        margin: 0 0 18px;
+      }
+
+      .tabs {
+        margin-top: 16px;
+        display: flex;
+        border-bottom: 1px solid #333;
+        margin-bottom: 10px;
+      }
+
+      .tab {
+        padding: 10px 16px;
+        cursor: pointer;
+        /* background: #222; */
+        /* border: 1px solid #333;
+        border-bottom: none;
+        margin-right: 5px; */
+        border-radius: 6px 6px 0 0;
+        font-weight: 600;
+      }
+
+      .tab.active {
+        border-bottom: 2px solid #ffa64d;
+        color: #ffa64d;
+      }
+
+      .tab-content {
+        display: none;
+        background: #333;
+        /* border: 1px solid #333; */
+        border-radius: 0 0 6px 6px;
+        /* padding: 16px; */
+        position: relative;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      pre {
+        margin: 0;
+        font-size: 14px;
+        background: transparent;
+        overflow-x: auto;
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 6px;
+        cursor: pointer;
+        border: none;
+        background: transparent; /* nền trong suốt */
+        color: #fff; /* icon màu trắng */
+        font-size: 18px;
+      }
+
+      .copy-btn:hover {
+        color: #ff8a2a; /* hover đổi sang xanh */
+      }
+
+      .toast {
+        visibility: hidden;
+        min-width: 180px;
+        background: #333;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 12px;
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.5s, bottom 0.5s;
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      .toast.show {
+        visibility: visible;
+        opacity: 1;
+        bottom: 50px; /* hiệu ứng trượt lên */
+      }
+
+      .logo-fixed {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 999;
+        padding: 6px 10px;
+        border-radius: 12px;
+        background: rgba(23, 23, 23, 0.6);
+        /* nền mờ để nổi bật hơn */
+        backdrop-filter: blur(8px);
+      }
+
+      .logo-fixed img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .logo-fixed .logo-text {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="logo-fixed">
+      <img src="assets/images/favicon.ico" alt="GeminiGen AI logo" />
+      <span class="logo-text">GeminiGen AI</span>
+    </div>
+    <div id="toast" class="toast">✅ Code copied!</div>
+    <main class="wrapper">
+      <h1>Integrate API with your language</h1>
+      <p>
+        This quick guide shows you how to integrate an API into your app using a
+        variety of popular programming languages. Just choose a language you're
+        comfortable with, copy the sample code, and start connecting to the API
+        right away.
+      </p>
+
+      <h3>AI Image Generator</h3>
+
+      <div class="tabs">
+        <div class="tab active" data-lang="javascript" data-group="img">
+          Javascript
+        </div>
+        <div class="tab" data-lang="java" data-group="img">Java</div>
+        <div class="tab" data-lang="python" data-group="img">Python</div>
+        <div class="tab" data-lang="php" data-group="img">Php</div>
+        <div class="tab" data-lang="csharp" data-group="img">C#</div>
+      </div>
+
+      <!-- Javascript image gen -->
+      <div class="tab-content active" id="javascript-img">
+        <button class="copy-btn" onclick="copyCode('code-javascript-img')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-javascript-img" class="language-javascript">...</code></pre>
+      </div>
+
+      <!-- Java image gen -->
+      <div class="tab-content" id="java-img">
+        <button class="copy-btn" onclick="copyCode('code-java-img')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-java-img" class="language-java">...</code></pre>
+      </div>
+
+      <!-- Python image gen -->
+      <div class="tab-content" id="python-img">
+        <button class="copy-btn" onclick="copyCode('python-java-img')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="python-java-img" class="language-python">print('Hello world')</code></pre>
+      </div>
+
+      <!-- Php image gen -->
+      <div class="tab-content" id="php-img">
+        <button class="copy-btn" onclick="copyCode('code-php-img')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-php-img" class="language-php">...</code></pre>
+      </div>
+
+      <!-- C# image gen -->
+      <div class="tab-content" id="csharp-img">
+        <button class="copy-btn" onclick="copyCode('code-csharp-img')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-csharp-img" class="language-csharp">...</code></pre>
+      </div>
+
+      <h3>AI Video Generator</h3>
+
+      <div class="tabs">
+        <div class="tab active" data-lang="javascript" data-group="video">
+          Javascript
+        </div>
+        <div class="tab" data-lang="java" data-group="video">Java</div>
+        <div class="tab" data-lang="python" data-group="video">Python</div>
+        <div class="tab" data-lang="php" data-group="video">Php</div>
+        <div class="tab" data-lang="csharp" data-group="video">C#</div>
+      </div>
+
+      <!-- Javascript image gen -->
+      <div class="tab-content active" id="javascript-video">
+        <button class="copy-btn" onclick="copyCode('code-javascript-video')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-javascript-video" class="language-javascript">...</code></pre>
+      </div>
+
+      <!-- Java image gen -->
+      <div class="tab-content" id="java-video">
+        <button class="copy-btn" onclick="copyCode('code-java-video')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-java-video" class="language-java">...</code></pre>
+      </div>
+
+      <!-- Python image gen -->
+      <div class="tab-content" id="python-video">
+        <button class="copy-btn" onclick="copyCode('code-python-video')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-python-video" class="language-python">print('Hello world')</code></pre>
+      </div>
+
+      <!-- Php image gen -->
+      <div class="tab-content" id="php-video">
+        <button class="copy-btn" onclick="copyCode('code-php-video')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-php-video" class="language-php">...</code></pre>
+      </div>
+
+      <!-- C# image gen -->
+      <div class="tab-content" id="csharp-video">
+        <button class="copy-btn" onclick="copyCode('code-csharp-video')">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+        <pre><code id="code-csharp-video" class="language-csharp">...</code></pre>
+      </div>
+    </main>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+
+    <script>
+      const tabs = document.querySelectorAll(".tab");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const lang = tab.dataset.lang;
+          const group = tab.dataset.group;
+
+          // --- Đổi tab trong group hiện tại ---
+          document
+            .querySelectorAll(`.tab[data-group="${group}"]`)
+            .forEach((t) => t.classList.remove("active"));
+
+          let currentTabsContainer = tab.parentElement;
+          let nextElement = currentTabsContainer.nextElementSibling;
+          while (nextElement && nextElement.classList.contains("tab-content")) {
+            nextElement.classList.remove("active");
+            nextElement = nextElement.nextElementSibling;
+          }
+
+          tab.classList.add("active");
+          const activeContent = document.getElementById(`${lang}-${group}`);
+          if (activeContent) {
+            activeContent.classList.add("active");
+          }
+
+          // --- Đồng bộ tất cả group khác theo lang đã chọn ---
+          const allGroups = [
+            ...new Set(Array.from(tabs).map((t) => t.dataset.group)),
+          ];
+          allGroups.forEach((g) => {
+            if (g !== group) {
+              // tắt hết tab & content trong group đó
+              document
+                .querySelectorAll(`.tab[data-group="${g}"]`)
+                .forEach((t) => t.classList.remove("active"));
+              let container = document.querySelector(
+                `.tab[data-group="${g}"]`
+              ).parentElement;
+              let el = container.nextElementSibling;
+              while (el && el.classList.contains("tab-content")) {
+                el.classList.remove("active");
+                el = el.nextElementSibling;
+              }
+
+              // bật tab & content theo lang
+              const tabToActivate = document.querySelector(
+                `.tab[data-group="${g}"][data-lang="${lang}"]`
+              );
+              if (tabToActivate) {
+                tabToActivate.classList.add("active");
+                const contentToActivate = document.getElementById(
+                  `${lang}-${g}`
+                );
+                if (contentToActivate) {
+                  contentToActivate.classList.add("active");
+                }
+              }
+            }
+          });
+        });
+      });
+      // Copy function
+      function copyCode(id) {
+        const code = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          showToast("Code copied!");
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500); // 2.5s biến mất
+      }
+    </script>
+  </body>
+</html>
