@@ -1,11 +1,11 @@
 :root {
-  --bg: #171717;       /* nền đen chính */
-  --card: #1c1c1c;     /* nền card */
-  --text: #e8ecf2;     /* chữ sáng */
-  --muted: #a6afc3;    /* chữ phụ */
-  --accent: #ff8a2a;   /* cam sáng (chủ đạo) */
+  --bg: #171717; /* nền đen chính */
+  --card: #1c1c1c; /* nền card */
+  --text: #e8ecf2; /* chữ sáng */
+  --muted: #a6afc3; /* chữ phụ */
+  --accent: #ff8a2a; /* cam sáng (chủ đạo) */
   --accent-2: #ffa64d; /* cam nhạt hover */
-  --outline: #2a2a2a;  /* viền xám đậm */
+  --outline: #2a2a2a; /* viền xám đậm */
 }
 
 * {
@@ -22,7 +22,9 @@ body {
 
 .wrapper {
   max-width: 960px;
-  margin: 56px auto;
+  margin-bottom: 56px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 20px;
 }
 
@@ -133,10 +135,7 @@ input[type="text"] {
 }
 
 .section {
-  background: linear-gradient(90deg,
-      #3a2a1f,
-      #241f28,
-      #221b35);
+  background: linear-gradient(90deg, #3a2a1f, #241f28, #221b35);
   /* nâu → tím */
   border: 1px solid #a36b3f;
   /* viền cam nâu nhạt */
@@ -230,7 +229,6 @@ b {
   background: #e68a00;
 }
 
-
 .code-block {
   overflow-x: auto;
   /* cuộn ngang */
@@ -240,7 +238,6 @@ b {
   background: #2d2d2d;
   border-radius: 15px;
 }
-
 
 .gen-container {
   /* background: #111; */
@@ -379,5 +376,78 @@ b {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+.header {
+  position: sticky; /* bám trên cùng khi scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(23, 23, 23, 0.9); /* nền tối mờ */
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo img {
+  width: 36px;
+  height: 36px;
+}
+
+.logo .logo-text {
+  font-size: 24px; /* chỉnh theo ý */
+  background: linear-gradient(90deg, #d16ba5, #ff6f61, #ffb347);
+  -webkit-background-clip: text; /* cắt gradient theo chữ */
+  -webkit-text-fill-color: transparent; /* làm chữ trong suốt để hiện gradient */
+  background-clip: text; /* cho trình duyệt khác */
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+}
+
+.nav a {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.nav a:hover {
+  color: var(--accent);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .logo img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .logo .logo-text {
+    font-size: 16px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
   }
 }
