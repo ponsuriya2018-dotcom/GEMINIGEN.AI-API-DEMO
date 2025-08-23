@@ -14,62 +14,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link href="css/index.css" rel="stylesheet"/>
 
     <style>
-      :root {
-        --bg: #171717;
-        --card: #12182a;
-        --text: #e8ecf2;
-        --muted: #a6afc3;
-        --accent: #6aa3ff;
-        --accent-2: #8ef;
-        --outline: #22314f;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-          "Helvetica Neue", Arial;
-        background: var(--bg);
-        color: var(--text);
-      }
-
-      .wrapper {
-        max-width: 960px;
-        margin: 56px auto;
-        padding: 0 20px;
-      }
-
-      /* .section{background:linear-gradient(180deg,var(--card),#0f1424); border:1px solid var(--outline); border-radius:20px; padding:28px; box-shadow:0 10px 30px rgba(0,0,0,.35); margin-top:20px} */
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        background: #0c1222;
-        border: 1px solid var(--outline);
-        padding: 6px 10px;
-        border-radius: 999px;
-      }
-
-      h1 {
-        font-size: 24px;
-        margin: 16px 0 10px;
-      }
-
-      p {
-        font-size: 16px;
-        color: var(--muted);
-        margin: 0 0 18px;
-      }
-
       .tabs {
         margin-top: 16px;
         display: flex;
@@ -152,33 +99,6 @@
         opacity: 1;
         bottom: 50px; /* hiệu ứng trượt lên */
       }
-
-      .logo-fixed {
-        position: fixed;
-        top: 16px;
-        left: 16px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        z-index: 999;
-        padding: 6px 10px;
-        border-radius: 12px;
-        background: rgba(23, 23, 23, 0.6);
-        /* nền mờ để nổi bật hơn */
-        backdrop-filter: blur(8px);
-      }
-
-      .logo-fixed img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .logo-fixed .logo-text {
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--text);
-        white-space: nowrap;
-      }
     </style>
   </head>
 
@@ -198,7 +118,7 @@
       </p>
 
       <h3>AI Image Generator</h3>
-
+      <p>The code below we only include required parameters. There are many other fine-tuning parameters you can see more <a target="_blank" rel="noopener noreferrer" href="https://docs.geminigen.ai/resources/image-generation">here</a>.</p>
       <div class="tabs">
         <div class="tab active" data-lang="javascript" data-group="img">
           Javascript
@@ -214,7 +134,38 @@
         <button class="copy-btn" onclick="copyCode('code-javascript-img')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-javascript-img" class="language-javascript">...</code></pre>
+        <pre><code id="code-javascript-img" class="language-javascript">
+import axios from "axios";
+import FormData from "form-data";
+import fs from "fs";
+
+async function generateImage() {
+  const formData = new FormData();
+  formData.append("prompt", "Create a dog eat pizza");
+  formData.append("model", "imagen-flash");
+  // other params...
+
+  try {
+    const response = await axios.post(
+      "https://api.geminigen.ai/uapi/v1/generate_image",
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          "Accept": "application/json",
+          "x-api-key": "your_api_key"
+        }
+      }
+    );
+    console.log(response.data);
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
+}
+
+generateImage();
+
+        </code></pre>
       </div>
 
       <!-- Java image gen -->
@@ -222,7 +173,33 @@
         <button class="copy-btn" onclick="copyCode('code-java-img')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-java-img" class="language-java">...</code></pre>
+        <pre><code id="code-java-img" class="language-java">
+import okhttp3.*;
+import java.io.File;
+import java.io.IOException;
+
+public class GenImage {
+    public static void main(String[] args) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        bodyBuilder.addFormDataPart("prompt", "Create a dog eat pizza");
+        bodyBuilder.addFormDataPart("model", "imagen-flash");
+
+        Request request = new Request.Builder()
+                .url("https://api.geminigen.ai/uapi/v1/generate_image")
+                .addHeader("x-api-key", "your_api_key")
+                .addHeader("Accept", "application/json")
+                .post(bodyBuilder.build())
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            System.out.println(response.body().string());
+        }
+    }
+}
+
+        </code></pre>
       </div>
 
       <!-- Python image gen -->
@@ -230,7 +207,24 @@
         <button class="copy-btn" onclick="copyCode('python-java-img')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="python-java-img" class="language-python">print('Hello world')</code></pre>
+        <pre><code id="python-java-img" class="language-python">
+import requests
+
+url = "https://api.geminigen.ai/uapi/v1/generate_image"
+headers = {
+    "Accept": "application/json",
+    "x-api-key": "your_api_key"
+}
+
+files = {
+    "prompt": (None, "Create a dog eat pizza"),
+    "model": (None, "imagen-flash"),
+    # other params...
+}
+
+response = requests.post(url, headers=headers, files=files)
+print(response.json())
+        </code></pre>
       </div>
 
       <!-- Php image gen -->
@@ -238,7 +232,35 @@
         <button class="copy-btn" onclick="copyCode('code-php-img')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-php-img" class="language-php">...</code></pre>
+        <pre><code id="code-php-img" class="language-php">
+&lt;?php
+$curl = curl_init();
+
+$data = [
+    "prompt" => "Create a dog eat pizza",
+    "model" => "imagen-flash",
+    // other params...
+];
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://api.geminigen.ai/uapi/v1/generate_image",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST => true,
+  CURLOPT_HTTPHEADER => [
+    "Accept: application/json",
+    "x-api-key: your_api_key"
+  ],
+  CURLOPT_POSTFIELDS => $data
+]);
+
+$response = curl_exec($curl);
+if (curl_errno($curl)) {
+    echo "Error: " . curl_error($curl);
+}
+curl_close($curl);
+
+echo $response;
+        </code></pre>
       </div>
 
       <!-- C# image gen -->
@@ -246,11 +268,33 @@
         <button class="copy-btn" onclick="copyCode('code-csharp-img')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-csharp-img" class="language-csharp">...</code></pre>
+        <pre><code id="code-csharp-img" class="language-csharp">
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program {
+    static async Task Main() {
+        using (var client = new HttpClient()) {
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("x-api-key", "your_api_key");
+
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent("Create a dog eat pizza"), "prompt");
+            form.Add(new StringContent("imagen-flash"), "model");
+            // other params...
+
+            var response = await client.PostAsync("https://api.geminigen.ai/uapi/v1/generate_image", form);
+            string result = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(result);
+        }
+    }
+}
+        </code></pre>
       </div>
 
       <h3>AI Video Generator</h3>
-
+      <p>The code below we only include required parameters. There are many other fine-tuning parameters you can see more <a target="_blank" rel="noopener noreferrer" href="https://docs.geminigen.ai/resources/video-generation">here</a>.</p>
       <div class="tabs">
         <div class="tab active" data-lang="javascript" data-group="video">
           Javascript
@@ -266,7 +310,37 @@
         <button class="copy-btn" onclick="copyCode('code-javascript-video')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-javascript-video" class="language-javascript">...</code></pre>
+        <pre><code id="code-javascript-video" class="language-javascript">
+import axios from "axios";
+import FormData from "form-data";
+
+async function generateVideo() {
+  const formData = new FormData();
+  formData.append("prompt", "Create a cat small");
+  formData.append("model", "veo-2");
+  formData.append("enhance_prompt", "true");
+  // other params...
+
+  try {
+    const response = await axios.post(
+      "https://api.geminigen.ai/uapi/v1/video-gen/veo",
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          "Accept": "application/json",
+          "x-api-key": "your_api_key"
+        }
+      }
+    );
+    console.log(response.data);
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
+}
+
+generateVideo();
+        </code></pre>
       </div>
 
       <!-- Java image gen -->
@@ -274,7 +348,62 @@
         <button class="copy-btn" onclick="copyCode('code-java-video')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-java-video" class="language-java">...</code></pre>
+        <pre><code id="code-java-video" class="language-java">
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
+            URL url = new URL("https://api.geminigen.ai/uapi/v1/video-gen/veo");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("x-api-key", "your_api_key");
+            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            OutputStream os = conn.getOutputStream();
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(os, "UTF-8"), true);
+
+            // prompt
+            writer.append("--" + boundary).append("\r\n");
+            writer.append("Content-Disposition: form-data; name=\"prompt\"\r\n\r\n");
+            writer.append("Create a cat small").append("\r\n");
+
+            // model
+            writer.append("--" + boundary).append("\r\n");
+            writer.append("Content-Disposition: form-data; name=\"model\"\r\n\r\n");
+            writer.append("veo-2").append("\r\n");
+
+            // enhance_prompt
+            writer.append("--" + boundary).append("\r\n");
+            writer.append("Content-Disposition: form-data; name=\"enhance_prompt\"\r\n\r\n");
+            writer.append("true").append("\r\n");
+
+            // other params...
+
+            writer.append("--" + boundary + "--").append("\r\n");
+            writer.flush();
+            writer.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                response.append(line).append("\n");
+            }
+            br.close();
+            System.out.println(response.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+        </code></pre>
       </div>
 
       <!-- Python image gen -->
@@ -282,7 +411,26 @@
         <button class="copy-btn" onclick="copyCode('code-python-video')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-python-video" class="language-python">print('Hello world')</code></pre>
+        <pre><code id="code-python-video" class="language-python">
+import requests
+
+url = "https://api.geminigen.ai/uapi/v1/video-gen/veo"
+headers = {
+    "Accept": "application/json",
+    "x-api-key": "your_api_key"
+}
+
+files = {
+    "prompt": (None, "Create a cat small"),
+    "model": (None, "veo-2"),
+    "enhance_prompt": (None, "true"),
+    # other params...
+}
+
+response = requests.post(url, headers=headers, files=files)
+print(response.json())
+
+        </code></pre>
       </div>
 
       <!-- Php image gen -->
@@ -290,7 +438,36 @@
         <button class="copy-btn" onclick="copyCode('code-php-video')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-php-video" class="language-php">...</code></pre>
+        <pre><code id="code-php-video" class="language-php">
+&lt;?php
+$curl = curl_init();
+
+$data = [
+    "prompt" => "Create a cat small",
+    "model" => "veo-2",
+    "enhance_prompt" => "true",
+    // other params...
+];
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://api.geminigen.ai/uapi/v1/video-gen/veo",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_POST => true,
+  CURLOPT_HTTPHEADER => [
+    "Accept: application/json",
+    "x-api-key: your_api_key"
+  ],
+  CURLOPT_POSTFIELDS => $data
+]);
+
+$response = curl_exec($curl);
+if (curl_errno($curl)) {
+    echo "Error: " . curl_error($curl);
+}
+curl_close($curl);
+
+echo $response;
+        </code></pre>
       </div>
 
       <!-- C# image gen -->
@@ -298,7 +475,31 @@
         <button class="copy-btn" onclick="copyCode('code-csharp-video')">
           <i class="fa-regular fa-copy"></i>
         </button>
-        <pre><code id="code-csharp-video" class="language-csharp">...</code></pre>
+        <pre><code id="code-csharp-video" class="language-csharp">
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program {
+    static async Task Main() {
+        using (var client = new HttpClient()) {
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("x-api-key", "your_api_key");
+
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent("Create a cat small"), "prompt");
+            form.Add(new StringContent("veo-2"), "model");
+            form.Add(new StringContent("true"), "enhance_prompt");
+            // other params...
+
+            var response = await client.PostAsync("https://api.geminigen.ai/uapi/v1/video-gen/veo", form);
+            string result = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(result);
+        }
+    }
+}
+
+        </code></pre>
       </div>
     </main>
 

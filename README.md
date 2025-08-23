@@ -22,8 +22,8 @@ Geminigen.ai offers AI-generated images and videos from text at a more affordabl
 
 ## 📚 Documentation
 We provide APIs to generate images/videos. Please follow the instructions below.
-- To try out the photo and video gene APIs visit: [Getting started](https://hoangmanhlong.github.io/geminigen-ai-doc-demo/)
-- Use APIs with the programming languages ​​you use. See how to [integrate API with your language](https://hoangmanhlong.github.io/geminigen-ai-doc-demo/demo.html).
+- To try out the photo and video gene APIs visit: <a href="https://ainnate-geminigen.github.io/GEMINIGEN.AI-API-DEMO/" target="_blank">Getting started</a>
+- Use APIs with the programming languages ​​you use. See how to <a href="https://ainnate-geminigen.github.io/GEMINIGEN.AI-API-DEMO/demo.html" target="_blank">integrate API with your language</a>.
 
 
 ## 👋 Contributing
