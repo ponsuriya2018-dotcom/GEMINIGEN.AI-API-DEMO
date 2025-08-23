@@ -57,8 +57,11 @@
     <p>
       We provide some API you can by providing params like API key, prompt,...
     </p>
+    <p><b style="border-bottom: 1px solid #ffa64d;">Note</b>: to use the APIs below, you must upgrade your plan to
+      <b>Premium</b>.</p>
     <h4>AI Image Generator</h4>
-    <p>Create stunning images from text prompts using advanced AI models. Enter your API key and prompt in the box below to generate an image now.</p>
+    <p>Create stunning images from text prompts using advanced AI models. Enter your API key and prompt in the box below
+      to generate an image now.</p>
     <div class="gen-container">
       <label for="apiKey">API Key</label>
       <input type="text" id="apiKey" placeholder="Enter your API key" />
@@ -74,16 +77,32 @@
     <p>Create professional videos from text prompts using advanced AI models</p>
     <p><b style="border-bottom: 1px solid #ffa64d;">Note</b>: make sure you have configured <b>Webhook URL</b> to
       receive video results. If you don't have a webhook, configure it <a
-        href="https://dev.geminigen.ai/profile/integration/webhook" target="_blank" rel="noopener noreferrer">here</a>.
+        href="https://geminigen.ai/profile/integration/webhook" target="_blank" rel="noopener noreferrer">here</a>.
       Additionally, your webhook must be designed to receive the correct payload format to receive the most accurate
       data.
     </p>
+        <div class="gen-container">
+      <label for="apiKey">API Key</label>
+      <input type="text" id="apiKeyGenVideo" placeholder="Enter your API key" />
+
+      <label for="prompt">Prompt</label>
+      <textarea id="promptGenVideo" placeholder="Describe what you want to generate..."></textarea>
+
+      <button id="generateVideoBtn" onclick="generateVideo()">Generate</button>
+    </div>
 
     <h3>3. Integrate API with your language</h3>
     <p>If you want to integrate with the programming languages you are using, visit <a href="demo.html" target="_blank"
         rel="noopener noreferrer">the demo</a> for specific instructions.</p>
   </main>
 
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <span class="popup-close" onclick="closePopup()">×</span>
+      <h2 id="popupTitle"></h2>
+      <p id="popupMessage"></p>
+    </div>
+  </div>
 
   <script src="js/index.js"></script>
 </body>
