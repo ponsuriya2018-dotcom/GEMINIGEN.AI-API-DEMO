@@ -12,11 +12,16 @@ async function generateImage() {
   const apiKey = document.getElementById("apiKey").value.trim();
   const prompt = document.getElementById("prompt").value.trim();
   const imagePreview = document.getElementById("imagePreview");
+  const generateBtn = document.getElementById("generateBtn");
 
   if (!apiKey || !prompt) {
     showPopup("Please enter API key and prompt!");
     return;
   }
+
+  // Disable button khi bắt đầu gọi API
+  generateBtn.disabled = true;
+  generateBtn.textContent = "Generating...";
 
   const formData = new FormData();
   formData.append("prompt", prompt);
@@ -33,7 +38,26 @@ async function generateImage() {
     });
 
     if (!response.ok) {
-      showPopup(RESPONSE_MESSAGE_MAPPING.get(response.status));
+      // Trường hợp backend trả JSON có error_code / error_message
+      if (response.status >= 400 && response.status < 500) {
+        try {
+          const errData = await response.json();
+          if (errData?.detail?.error_message) {
+            showPopup(errData.detail.error_message);
+          } else {
+            showPopup("Request failed with status " + response.status);
+          }
+        } catch (parseErr) {
+          showPopup("Client error: " + response.status);
+        }
+        return;
+      }
+
+      // Nếu là lỗi đã được mapping sẵn (500, 401,…)
+      const msg =
+        RESPONSE_MESSAGE_MAPPING[response.status] ||
+        "Unexpected error: " + response.status;
+      showPopup(msg);
       return;
     }
 
@@ -57,7 +81,18 @@ async function generateImage() {
       imagePreview.appendChild(imgElement);
     }
   } catch (error) {
-    console.error("Error calling API:", error);
+    if (!navigator.onLine) {
+      showPopup("No internet connection!");
+    } else if (error instanceof TypeError && error.message.includes("fetch")) {
+      showPopup("CORS blocked the request!");
+    } else {
+      console.error("Error calling API:", error);
+      showPopup("Unexpected error: " + error.message);
+    }
+  } finally {
+    // Enable lại button khi xong
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generate";
   }
 }
 
