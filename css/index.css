@@ -21,11 +21,16 @@ body {
 }
 
 .wrapper {
-  max-width: 960px;
+  max-width: 60%;
   margin-bottom: 56px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
+}
+
+p {
+  line-height: 1.6; /* hoặc 1.5 tuỳ bạn muốn thoáng hay chặt */
+  margin-bottom: 1em; /* cách giữa các đoạn */
 }
 
 /* .section{background:linear-gradient(180deg,var(--card),#0f1424); border:1px solid var(--outline); border-radius:20px; padding:28px; box-shadow:0 10px 30px rgba(0,0,0,.35); margin-top:20px} */
@@ -429,25 +434,20 @@ b {
 }
 
 /* Mobile responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
     padding: 12px;
   }
 
-  .logo img {
-    width: 28px;
-    height: 28px;
-  }
-
-  .logo .logo-text {
-    font-size: 16px;
-  }
-
   .nav {
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 8px;
+  }
+
+  .wrapper {
+    max-width: 100%;
   }
 }
