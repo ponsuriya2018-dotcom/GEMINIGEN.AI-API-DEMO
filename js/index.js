@@ -1,4 +1,3 @@
-
 const BACKEND_URL = "https://api.geminigen.ai";
 const DEFAULT_GEN_IMAGE_MODEL = "imagen-flash";
 const DEFAULT_GEN_VIDEO_MODEL = "veo-2";
@@ -7,12 +6,85 @@ const RESPONSE_MESSAGE_MAPPING = {
   401: "Incorrect API key",
 };
 
+const imageGenAspectRatios = ["1:1", "3:4", "4:3", "16:9", "9:16"];
+const ImageGenstyles = [
+  "None",
+  "3D Render",
+  "Acrylic",
+  "Anime General",
+  "Creative",
+  "Dynamic",
+  "Fashion",
+  "Game Concept",
+  "Graphic Design 3D",
+  "Illustration",
+  "Photorealistic",
+  "Portrait",
+  "Portrait Cinematic",
+  "Portrait Fashion",
+  "Ray Traced",
+  "Stock Photo",
+  "Watercolor",
+];
+const ImageGenModels = {
+  "Imagen 4 Ultra": "imagen-4-ultra",
+  "Imagen 4 Fast": "imagen-4-fast",
+  "Imagen 4": "imagen-4",
+  "Gemini 2.0 Flash": "imagen-flash",
+};
+
+const container = document.getElementById("aspectRatioContainer");
+const imageGenStyleSelect = document.getElementById("imageGenStyle");
+const imageGenModelSelect = document.getElementById("imageGenModel");
+
+imageGenAspectRatios.forEach((ratio, index) => {
+  const div = document.createElement("div");
+  div.className = "aspect-option" + (index === 0 ? " active" : "");
+  div.innerText = ratio;
+
+  div.addEventListener("click", () => {
+    document
+      .querySelectorAll(".aspect-option")
+      .forEach((el) => el.classList.remove("active"));
+    div.classList.add("active");
+  });
+
+  container.appendChild(div);
+});
+
+// Render option từ mảng
+ImageGenstyles.forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  imageGenStyleSelect.appendChild(option);
+});
+
+// Render option từ mảng
+Object.keys(ImageGenModels).forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  imageGenModelSelect.appendChild(option);
+});
+
 async function generateImage() {
   const genImageUrl = BACKEND_URL + "/uapi/v1/generate_image";
   const apiKey = document.getElementById("apiKey").value.trim();
   const prompt = document.getElementById("prompt").value.trim();
   const imagePreview = document.getElementById("imagePreview");
   const generateBtn = document.getElementById("generateBtn");
+  const aspectRatio = document
+    .querySelector(".aspect-option.active")
+    .innerText.trim();
+  const selectedStyleText =
+    imageGenStyleSelect.options[imageGenStyleSelect.selectedIndex].text;
+  const selectedModelText =
+    imageGenModelSelect.options[imageGenModelSelect.selectedIndex].text;
+  const uploadGenImageFile = document.getElementById("uploadGenImageFile");
+  const imageGenRef = uploadGenImageFile.files[0];
 
   if (!apiKey || !prompt) {
     showPopup("Please enter API key and prompt!");
@@ -23,16 +95,22 @@ async function generateImage() {
   generateBtn.disabled = true;
   generateBtn.textContent = "Generating...";
 
+  const requestStyle = selectedStyleText === "None" ? null : selectedStyleText;
   const formData = new FormData();
   formData.append("prompt", prompt);
-  formData.append("model", DEFAULT_GEN_IMAGE_MODEL);
+  formData.append("model", ImageGenModels[selectedModelText]);
+  formData.append("aspect_ratio", aspectRatio);
+  formData.append("style", requestStyle);
+  if (imageGenRef) {
+    formData.append("files", imageGenRef);
+  }
 
   try {
     const response = await fetch(genImageUrl, {
       method: "POST",
       headers: {
         "x-api-key": apiKey,
-        "Accept": "application/json"
+        Accept: "application/json",
       },
       body: formData,
     });
@@ -109,31 +187,33 @@ async function generateVideo() {
   const formData = new FormData();
   formData.append("prompt", prompt);
   formData.append("model", DEFAULT_GEN_VIDEO_MODEL);
-  formData.append("enhance_prompt", true)
+  formData.append("enhance_prompt", true);
 
   try {
     const response = await fetch(genImageUrl, {
       method: "POST",
       headers: {
         "x-api-key": apiKey,
-        "Accept": "application/json"
+        Accept: "application/json",
       },
       body: formData,
     });
-    response.s
+    response.s;
 
     if (!response.ok) {
       showPopup(RESPONSE_MESSAGE_MAPPING.get(response.status));
       return;
     }
 
-    showPopup('Video gen request initialization successful. Please check the data in your webhook.')
+    showPopup(
+      "Video gen request initialization successful. Please check the data in your webhook."
+    );
   } catch (error) {
     console.error("Error calling API:", error);
   }
 }
 
-function showPopup(message, title = 'Notification') {
+function showPopup(message, title = "Notification") {
   document.getElementById("popupTitle").innerText = title;
   document.getElementById("popupMessage").innerText = message;
   document.getElementById("popupOverlay").style.display = "flex";
@@ -151,8 +231,10 @@ document.addEventListener("keydown", function (event) {
 });
 
 // Đóng khi click ra ngoài popup
-document.getElementById("popupOverlay").addEventListener("click", function (event) {
-  if (event.target === this) {
-    closePopup();
-  }
-});
+document
+  .getElementById("popupOverlay")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closePopup();
+    }
+  });

@@ -118,8 +118,25 @@
         comfortable with, copy the sample code, and start connecting to the API
         right away.
       </p>
-
-      <h3>AI Image Generator</h3>
+      <h3>1. Webhook</h3>
+      <p>
+        After you call our API, we will send detailed data to your
+        <a
+          href="https://geminigen.ai/profile/integration/webhook/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Webhook URL</a
+        >. See more webhook information
+        <a
+          href="https://docs.geminigen.ai/getting-started/webhooks"
+          target="_blank"
+          rel="noopener noreferrer"
+          >here</a
+        >. The code below is an example of how to fetch and validate the data we
+        send to your webhook:
+      </p>
+      <div id="vertify-webhook-data-tabs-container"></div>
+      <h3>2. AI Image Generator</h3>
       <p>
         The code below we only include required parameters. There are many other
         fine-tuning parameters you can see more
@@ -138,15 +155,8 @@
   "base64_images": "data:image/png;base64,iVBORw0KGgoAA..."
 }
       </code></pre>
-      <p>
-        Additionally, the image details will be returned to the webhook you
-        configured earlier. Here is an example of how you configure the endpoint
-        to receive data:
-      </p>
-
-      <div id="img-webhook-tabs-container"></div>
       <p>The data request to your webhook will be in the form(JSON):</p>
-            <pre><code class="language-json">
+      <pre><code class="language-json">
 {
   "event_name": "IMAGE_GENERATION_COMPLETED",
   "event_uuid": "uuid1",
@@ -180,6 +190,207 @@
   }
 }
       </code></pre>
+      <h3>3. AI Video Generation</h3>
+      <p>
+        The code below we only include required parameters. There are many other
+        fine-tuning parameters you can see more
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.geminigen.ai/resources/video-generation"
+          >here</a
+        >.
+      </p>
+      <div id="video-tabs-container"></div>
+      <p>The returned response data format will be (JSON):</p>
+
+      <pre><code class="language-json">
+{
+  "id": 12345,
+  "uuid": "vid_abc123def456",
+  "user_id": 789,
+  "model_name": "veo-3",
+  "input_text": "A serene lake surrounded by mountains at sunset with gentle waves",
+  "negative_prompt": "",
+  "generate_result": "https://cdn.geminigen.ai/videos/vid_abc123def456.mp4",
+  "input_file_path": "",
+  "type": "video_generation",
+  "used_credit": 50,
+  "status": 2,
+  "status_desc": "completed",
+  "status_percentage": 100,
+  "error_code": "",
+  "error_message": "",
+  "rating": "",
+  "rating_content": "",
+  "custom_prompt": "",
+  "created_at": "2025-07-21T13:26:53.076Z",
+  "updated_at": "2025-07-21T13:26:53.076Z",
+  "file_size": 10485760,
+  "expired_at": "2025-08-21T13:26:53.076Z",
+  "inference_type": "text_to_video",
+  "name": "Serene Lake Sunset",
+  "created_by": "user_789",
+  "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/vid_abc123def456_small.jpg",
+  "duration": 5,
+  "resolution": "720p",
+  "aspect_ratio": "16:9"
+}
+      </code></pre>
+      <p>The data request to your webhook will be in the form(JSON):</p>
+      <pre><code class="language-json">
+{
+  "event_name": "VIDEO_GENERATION_COMPLETED",
+  "event_uuid": "uuid1",
+  "data": {
+    "id": 12345,
+    "uuid": "vid_abc123def456",
+    "user_id": 789,
+    "model_name": "veo-3",
+    "input_text": "A serene lake surrounded by mountains at sunset with gentle waves",
+    "negative_prompt": "",
+    "generate_result": "https://cdn.geminigen.ai/videos/vid_abc123def456.mp4",
+    "input_file_path": "",
+    "type": "video_generation",
+    "used_credit": 50,
+    "status": 2,
+    "status_desc": "completed",
+    "status_percentage": 100,
+    "error_code": "",
+    "error_message": "",
+    "rating": "",
+    "rating_content": "",
+    "custom_prompt": "",
+    "created_at": "2025-07-21T13:26:53.076Z",
+    "updated_at": "2025-07-21T13:26:53.076Z",
+    "file_size": 10485760,
+    "expired_at": "2025-08-21T13:26:53.076Z",
+    "inference_type": "text_to_video",
+    "name": "Serene Lake Sunset",
+    "created_by": "user_789",
+    "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/vid_abc123def456_small.jpg",
+    "duration": 5,
+    "resolution": "720p",
+    "aspect_ratio": "16:9"
+  }
+}
+        </code></pre>
+      <h3>4. Text To Speech</h3>
+      <p>
+        The code below we only include required parameters. There are many other
+        fine-tuning parameters you can see more
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.geminigen.ai/resources/tts-text"
+          >here</a
+        >.
+      </p>
+      <div id="tts-tabs-container"></div>
+      <p>The returned response data format will be (JSON):</p>
+
+      <pre><code class="language-json">
+{
+  "success": true,
+  "result": {
+    "uuid": "eef94c08-a806-11ef-b617-22023a24db09",
+    "voice_id": "OA001",
+    "speed": 1,
+    "model": "tts-1",
+    "tts_input": "Hello, my name is GeminiGen.AI. I am a text-to-speech model.",
+    "estimated_credit": 54,
+    "used_credit": 54,
+    "status": 1,
+    "status_percentage": 50,
+    "error_message": "",
+    "speaker_name": "Alloy",
+    "created_at": "2024-11-21T12:48:40",
+    "updated_at": "2024-11-21T12:48:40"
+  }
+}
+      </code></pre>
+      <p>The data request to your webhook will be in the form(JSON):</p>
+      <pre><code class="language-json">
+{
+  "event_name": "TTS_TEXT_SUCCESS",
+  "event_uuid": "uuid1",
+  "data": {
+    "uuid": "eef94c08-a806-11ef-b617-22023a24db09",
+    "voice_id": "OA001",
+    "speed": 1,
+    "model": "tts-1",
+    "tts_input": "Hello, my name is GeminiGen.AI. I am a text-to-speech model.",
+    "estimated_credit": 54,
+    "used_credit": 54,
+    "status": 1,
+    "status_percentage": 50,
+    "error_message": "",
+    "speaker_name": "Alloy",
+    "media_url": "https://cdn.geminigen.ai/tts/tts_abc123def456.mp3",
+    "created_at": "2024-11-21T12:48:40",
+    "updated_at": "2024-11-21T12:48:40"
+  }
+}
+        </code></pre>
+      <h3>5. Document To Speech</h3>
+      <p>
+        The code below we only include required parameters. There are many other
+        fine-tuning parameters you can see more
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.geminigen.ai/resources/tts-document"
+          >here</a
+        >.
+      </p>
+      <div id="dts-tabs-container"></div>
+      <p>The returned response data format will be (JSON):</p>
+
+      <pre><code class="language-json">
+{
+  "success": true,
+  "result": {
+    "uuid": "4a7693ee-aa35-11ef-bfda-7eba07618aa0",
+    "voice_id": "OA001",
+    "speed": 1,
+    "model": "tts-1",
+    "tts_input": "5101447014.pdf",
+    "estimated_credit": 0,
+    "used_credit": 0,
+    "status": 1,
+    "status_percentage": 1,
+    "error_message": "",
+    "speaker_name": "Alloy",
+    "created_at": "2024-11-24T07:25:33",
+    "updated_at": "2024-11-24T07:25:33",
+    "file_size": 98842
+  }
+}
+      </code></pre>
+      <p>The data request to your webhook will be in the form(JSON):</p>
+      <pre><code class="language-json">
+{
+  "event_name": "TTS_DOCUMENT_SUCCESS",
+  "event_uuid": "uuid1",
+  "data": {
+    "uuid": "4a7693ee-aa35-11ef-bfda-7eba07618aa0",
+    "voice_id": "OA001",
+    "speed": 1,
+    "model": "tts-1",
+    "tts_input": "5101447014.pdf",
+    "estimated_credit": 0,
+    "used_credit": 0,
+    "status": 1,
+    "status_percentage": 1,
+    "error_message": "",
+    "speaker_name": "Alloy",
+    "media_url": "https://cdn.geminigen.ai/tts/tts_abc123def456.mp3",
+    "created_at": "2024-11-24T07:25:33",
+    "updated_at": "2024-11-24T07:25:33",
+    "file_size": 98842
+  }
+}
+        </code></pre>
     </main>
 
     <!-- Prism.js -->

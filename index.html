@@ -84,12 +84,7 @@
       </p>
 
       <h3>2. Try the APIs</h3>
-      <p>
-        This page provides a quick way to test our APIs. For simplicity, you can
-        only customize the <b>API Key</b> and <b>Prompt</b> fields. All other
-        parameters are automatically set to default values (or
-        <code>null</code>) and cannot be changed here.
-      </p>
+      <p>This part provides a quick way to test our APIs.</p>
       <p>
         If you want to explore all available parameters and customize them,
         please refer to the
@@ -99,6 +94,10 @@
           rel="noopener noreferrer"
           >official documentation</a
         >.
+      </p>
+      <p>
+        <b style="border-bottom: 1px solid #ffa64d">Note</b>: We will count
+        credits for each request you make.
       </p>
       <h4>AI Image Generator</h4>
       <p>Create stunning images from text prompts using advanced AI models.</p>
@@ -112,6 +111,36 @@
           placeholder="Describe what you want to generate..."
         ></textarea>
 
+        <div style="margin-top: 15px">
+          <label>Aspect Ratio</label>
+          <div class="aspect-ratio" id="aspectRatioContainer"></div>
+        </div>
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="imageGenModel">Model</label>
+            <select
+              id="imageGenModel"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+
+          <div style="flex: 1; margin-top: 15px">
+            <label for="imageGenStyle">Style</label>
+            <select
+              id="imageGenStyle"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+        </div>
+        <div style="margin-top: 15px">
+          <label for="uploadFile">Image Reference</label>
+          <input
+            type="file"
+            id="uploadGenImageFile"
+            accept="image/*"
+            style="margin-left: 8px"
+          />
+        </div>
         <button id="generateBtn" onclick="generateImage()">Generate</button>
       </div>
       <div class="preview" id="imagePreview"></div>
@@ -171,5 +200,6 @@
     </div>
 
     <script src="js/index.js"></script>
+    <script></script>
   </body>
 </html>
