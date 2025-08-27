@@ -11,6 +11,74 @@
     />
 
     <link rel="stylesheet" href="css/index.css" />
+    <style>
+      .tabs {
+        display: flex;
+        gap: var(--tab-gap);
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      /* Individual tab button */
+      .tab {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 140ms ease;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* hover */
+      .tab:hover {
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.04);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          transparent
+        );
+      }
+
+      /* active tab */
+      .tab[aria-selected="true"] {
+        color: var(--accent);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 138, 42, 0.06),
+          rgba(255, 166, 77, 0.02)
+        );
+        border: 1px solid rgba(255, 138, 42, 0.12);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+      }
+
+      /* focus-visible for keyboard users */
+      .tab:focus-visible {
+        outline: 3px solid rgba(255, 138, 42, 0.18);
+        outline-offset: 2px;
+        border-radius: 8px;
+      }
+
+      /* panels */
+      .tab-panels {
+        margin-top: 8px;
+      }
+
+      .tab-panel {
+        padding: 12px 4px;
+        color: var(--text);
+        min-height: 60px; /* thay đổi tuỳ nội dung */
+        /* nếu bạn muốn panel có viền */
+        border-radius: 8px;
+      }
+    </style>
   </head>
 
   <body>
@@ -96,7 +164,20 @@
         >.
       </p>
       <p>
-        <b style="border-bottom: 1px solid #ffa64d">Note</b>: We will count
+        Make sure you have configured <b>Webhook URL</b> to receive detailed
+        results from the APIs. If you don't have a webhook, configure it
+        <a
+          href="https://geminigen.ai/profile/integration/webhook"
+          target="_blank"
+          rel="noopener noreferrer"
+          >here</a
+        >. Additionally, your webhook must be designed to receive the correct
+        payload format to receive the most accurate data. After using our web
+        interface to make the request, check the detailed results of your
+        webhook.
+      </p>
+      <p>
+        <b style="border-bottom: 1px solid #ffa64d">Important</b>: We will count
         credits for each request you make.
       </p>
       <h4>AI Image Generator</h4>
@@ -149,35 +230,293 @@
       <p>
         Create professional videos from text prompts using advanced AI models
       </p>
-      <p>
-        <b style="border-bottom: 1px solid #ffa64d">Note</b>: make sure you have
-        configured <b>Webhook URL</b> to receive video results. If you don't
-        have a webhook, configure it
-        <a
-          href="https://geminigen.ai/profile/integration/webhook"
-          target="_blank"
-          rel="noopener noreferrer"
-          >here</a
-        >. Additionally, your webhook must be designed to receive the correct
-        payload format to receive the most accurate data.
-      </p>
       <div class="gen-container">
-        <label for="apiKey">API Key</label>
+        <label for="apiKeyGenVideo">API Key</label>
         <input
           type="text"
           id="apiKeyGenVideo"
           placeholder="Enter your API key"
         />
 
-        <label for="prompt">Prompt</label>
+        <label for="promptGenVideo">Prompt</label>
         <textarea
           id="promptGenVideo"
           placeholder="Describe what you want to generate..."
         ></textarea>
 
+        <label for="negativePromptGenVideo">Negative prompt</label>
+        <textarea
+          id="negativePromptGenVideo"
+          placeholder="Describe what you don't want to see in the video"
+        ></textarea>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoGenModel">Model</label>
+            <select
+              id="videoGenModel"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoGenDuration">Duration</label>
+            <input
+              type="number"
+              style="width: 100%; margin-top: 16px"
+              value="8"
+              min="1"
+              id="videoGenDuration"
+            />
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="enhancePrompt">Enhance prompt</label>
+            <select
+              id="enhancePrompt"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoResolution">Resolution</label>
+            <select
+              id="videoResolution"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoAspectRatio">Aspect ratio</label>
+            <select
+              id="videoAspectRatio"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="uploadGenVideoFile">Image Reference</label>
+          <input
+            type="file"
+            id="uploadGenVideoFile"
+            accept="image/*"
+            style="margin-left: 8px"
+          />
+        </div>
+
         <button id="generateVideoBtn" onclick="generateVideo()">
           Generate
         </button>
+      </div>
+
+      <h4>AI Speech Generator</h4>
+      <p>Convert text to natural-sounding speech with 400+ AI voices</p>
+      <nav class="tabs" role="tablist" aria-label="Text to speech tabs">
+        <button
+          class="tab"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-text"
+          id="tab-text"
+          tabindex="0"
+        >
+          Text to Speech
+        </button>
+        <button
+          class="tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-doc"
+          id="tab-doc"
+          tabindex="-1"
+        >
+          Document to Speech
+        </button>
+      </nav>
+      <div class="tab-panels">
+        <section
+          id="panel-text"
+          class="tab-panel"
+          role="tabpanel"
+          aria-labelledby="tab-text"
+        >
+          <div class="gen-container">
+            <label for="apiKeyGenTts" class="required">API Key</label>
+            <input
+              type="text"
+              id="apiKeyGenTts"
+              placeholder="Enter your API key"
+            />
+
+            <label for="ttsText" class="required">Text</label>
+            <textarea
+              id="ttsText"
+              placeholder="Start write or paste your text hereto generate speech"
+            ></textarea>
+            <div id="charCount"></div>
+
+            <label for="ttsCustomPrompt">Custom prompt</label>
+            <textarea
+              id="ttsCustomPrompt"
+              placeholder="Custom prompt"
+            ></textarea>
+            <div id="charCount"></div>
+
+            <div style="display: flex; gap: 20px; width: 100%">
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsModel" class="required">Model</label>
+                <select
+                  id="ttsModel"
+                  style="width: 100%; margin-top: 16px"
+                ></select>
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsOutputFormat" class="required"
+                  >Output Format</label
+                >
+                <select
+                  id="ttsOutputFormat"
+                  style="width: 100%; margin-top: 16px"
+                ></select>
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsEmotion">Emotion</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="ttsEmotion"
+                />
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; width: 100%">
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsVoiceId" class="required">Voice ID</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="ttsVoiceId"
+                />
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsVoiceName" class="required">Voice name</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="ttsVoiceName"
+                />
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="ttsSpeed" class="required">Speed</label>
+                <input
+                  type="number"
+                  style="width: 100%; margin-top: 16px"
+                  value="1"
+                  min="1"
+                  step="0.1"
+                  id="ttsSpeed"
+                />
+              </div>
+            </div>
+
+            <button id="generateTtsBtn" onclick="generateTts()">
+              Text to speech
+            </button>
+          </div>
+        </section>
+
+        <section
+          id="panel-doc"
+          class="tab-panel"
+          role="tabpanel"
+          aria-labelledby="tab-doc"
+          hidden
+        >
+          <div class="gen-container">
+            <label for="apiKeyDts" class="required">API Key</label>
+            <input
+              type="text"
+              id="apiKeyDts"
+              placeholder="Enter your API key"
+            />
+
+            <div style="display: flex; gap: 20px; width: 100%">
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsModel" class="required">Model</label>
+                <select
+                  id="dtsModel"
+                  style="width: 100%; margin-top: 16px"
+                ></select>
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsOutputFormat" class="required"
+                  >Output Format</label
+                >
+                <select
+                  id="dtsOutputFormat"
+                  style="width: 100%; margin-top: 16px"
+                ></select>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; width: 100%">
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsDFile" class="required">Document</label>
+                <input
+                  type="file"
+                  id="dtsDFile"
+                  accept=".docx,.xlsx,.pptx,.pdf,.epub,.mobi,.txt,.html,.odt,.ods,.odp,.azw,.azw3"
+                  style="width: 100%; margin-top: 16px"
+                />
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsFilePassword">Document password</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="dtsFilePassword"
+                  placeholder="Enter document password here if any"
+                />
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; width: 100%">
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsVoiceId" class="required">Voice ID</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="dtsVoiceId"
+                />
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsVoiceName" class="required">Voice name</label>
+                <input
+                  type="text"
+                  style="width: 100%; margin-top: 16px"
+                  id="dtsVoiceName"
+                />
+              </div>
+              <div style="flex: 1; margin-top: 15px">
+                <label for="dtsSpeed" class="required">Speed</label>
+                <input
+                  type="number"
+                  style="width: 100%; margin-top: 16px"
+                  value="1"
+                  min="1"
+                  step="0.1"
+                  id="dtsSpeed"
+                />
+              </div>
+            </div>
+
+            <button id="generateDtsBtn" onclick="generateDts()">
+              Document to speech
+            </button>
+          </div>
+        </section>
       </div>
 
       <h3>3. Integrate API with your language</h3>
@@ -200,6 +539,65 @@
     </div>
 
     <script src="js/index.js"></script>
-    <script></script>
+    <script>
+      (function () {
+        const tabs = Array.from(document.querySelectorAll(".tabs .tab"));
+        const panels = Array.from(document.querySelectorAll(".tab-panel"));
+
+        function activateTab(tab) {
+          // deactivate all
+          tabs.forEach((t) => {
+            t.setAttribute("aria-selected", "false");
+            t.tabIndex = -1;
+          });
+          panels.forEach((p) => (p.hidden = true));
+
+          // activate chosen
+          tab.setAttribute("aria-selected", "true");
+          tab.tabIndex = 0;
+          const panelId = tab.getAttribute("aria-controls");
+          const panel = document.getElementById(panelId);
+          if (panel) panel.hidden = false;
+          tab.focus();
+        }
+
+        // click handler
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => activateTab(tab));
+          tab.addEventListener("keydown", (e) => {
+            const idx = tabs.indexOf(tab);
+            if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+              e.preventDefault();
+              const next = tabs[(idx + 1) % tabs.length];
+              activateTab(next);
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+              e.preventDefault();
+              const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+              activateTab(prev);
+            } else if (e.key === "Home") {
+              e.preventDefault();
+              activateTab(tabs[0]);
+            } else if (e.key === "End") {
+              e.preventDefault();
+              activateTab(tabs[tabs.length - 1]);
+            }
+          });
+        });
+
+        // ensure initial state (first tab active)
+        const first =
+          tabs.find((t) => t.getAttribute("aria-selected") === "true") ||
+          tabs[0];
+        if (first) activateTab(first);
+      })();
+      const ttsText = document.getElementById("ttsText");
+      const charCount = document.getElementById("charCount");
+      const maxLength = 30000;
+
+      ttsText.addEventListener("input", () => {
+        const length = ttsText.value.length;
+        charCount.textContent = `${length} / ${maxLength}`;
+      });
+    </script>
   </body>
 </html>

@@ -486,3 +486,16 @@ b {
     max-width: 100%;
   }
 }
+
+input[type="radio"] {
+  outline: none;
+}
+input[type="radio"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+label.required::after {
+    content: " *";
+    color: red;
+  }

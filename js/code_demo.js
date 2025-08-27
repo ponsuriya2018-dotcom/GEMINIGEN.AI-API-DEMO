@@ -388,7 +388,7 @@ public class WebhookUtil {
         }
     }
 
-    public static Object handleRequest(Map<String,Object> request) throws Exception {
+    public static void handleRequest(Map<String,Object> request) throws Exception {
         Map<String,String> headers = (Map)request.get("headers");
         String sigHex = headers.get("X-Signature");
         String bodyJson = (String)request.get("body");
@@ -513,7 +513,7 @@ public static class WebhookUtil {
         }
     }
 
-    public static object HandleRequest(Dictionary<string, object> request) {
+    public static void HandleRequest(Dictionary<string, object> request) {
         var headers = (Dictionary<string, object>)request["headers"];
         string sigHex = headers.ContainsKey("X-Signature") ? headers["X-Signature"].ToString() : null;
         string bodyJson = request["body"].ToString();
