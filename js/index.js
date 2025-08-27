@@ -172,7 +172,6 @@ async function generateImage() {
   }
 
   const genImageUrl = BACKEND_URL + "/uapi/v1/generate_image";
-  const imagePreview = document.getElementById("imagePreview");
   const generateBtn = document.getElementById("generateBtn");
   const aspectRatio = document
     .querySelector(".aspect-option.active")
@@ -185,15 +184,19 @@ async function generateImage() {
   const imageGenRef = uploadGenImageFile.files[0];
 
   // Disable button khi bắt đầu gọi API
+  const imagePreview = document.getElementById("imagePreview");
+  imagePreview.innerHTML = "";
   generateBtn.disabled = true;
   generateBtn.textContent = "Generating...";
 
-  selectedStyleText = selectedStyleText === "None" ? null : selectedStyleText;
   const formData = new FormData();
   formData.append("prompt", prompt);
   formData.append("model", IMAGE_GEN_MODELS[selectedModelText]);
   formData.append("aspect_ratio", aspectRatio);
-  formData.append("style", selectedStyleText);
+  
+  if (selectedStyleText !== "None") {
+    formData.append("style", selectedStyleText);
+  }
   if (imageGenRef) {
     formData.append("files", imageGenRef);
   }
@@ -235,20 +238,17 @@ async function generateImage() {
     const result = await response.json();
     console.log("API response:", result);
 
-    // Nếu có base64_images
-    if (result.base64_images && result.base64_images.length > 0) {
-      const imgBase64 = result.base64_images[0];
+    if (result.base64_images) {
+      const imgBase64 = result.base64_images; // lấy nguyên chuỗi string
 
-      // Tạo thẻ img
       const imgElement = document.createElement("img");
-      imgElement.src = `data:image/png;base64,${imgBase64}`;
+      imgElement.src = imgElement.src = "data:image/png;base64," + imgBase64;
       imgElement.alt = "Generated Image";
       imgElement.style.maxWidth = "100%";
       imgElement.style.borderRadius = "12px";
       imgElement.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
 
-      // Gắn vào div có id=imagePreview
-      imagePreview.innerHTML = ""; // xoá ảnh cũ nếu có
+      imagePreview.innerHTML = "";
       imagePreview.appendChild(imgElement);
     }
   } catch (error) {
@@ -401,29 +401,28 @@ async function generateTts() {
 
   const genImageUrl = BACKEND_URL + "/uapi/v1/text-to-speech";
 
-  const formData = new FormData();
-  formData.append("input", ttsText);
-  formData.append("model", model);
-  formData.append("output_format", ttsOutputFormat.toLowerCase());
-  formData.append("speed", ttsSpeed);
-
-  const voices = [
-    {
-      voice: {
-        id: voiceId,
+  const request_body = {
+    input: ttsText,
+    model: model,
+    output_format: ttsOutputFormat.toLowerCase(),
+    speed: parseFloat(ttsSpeed),
+    voices: [
+      {
+        voice: {
+          id: voiceId,
+          name: voiceName,
+        },
         name: voiceName,
       },
-      name: voiceName,
-    },
-  ];
-  formData.append("voices", JSON.stringify(voices));
+    ],
+  };
 
   if (ttsEmotion) {
-    formData.append("emotion", ttsEmotion);
+    request_body.emotion = ttsEmotion;
   }
 
   if (customPrompt) {
-    formData.append("custom_prompt", customPrompt);
+    request_body.custom_prompt = customPrompt;
   }
 
   try {
@@ -432,8 +431,9 @@ async function generateTts() {
       headers: {
         "x-api-key": apiKey,
         Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify(request_body),
     });
 
     if (!response.ok) {
