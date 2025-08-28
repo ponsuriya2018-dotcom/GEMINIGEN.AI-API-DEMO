@@ -519,6 +519,106 @@
         </section>
       </div>
 
+      <h4>AI Dialogue Generator</h4>
+      <p>Create realistic conversations between multiple AI speakers</p>
+      <div class="gen-container">
+        <label for="apiKeyGenTtsDialogue" class="required">API Key</label>
+        <input
+          type="text"
+          id="apiKeyGenTtsDialogue"
+          placeholder="Enter your API key"
+        />
+
+        <label for="ttsCustomPromptDialogue">Custom prompt</label>
+        <textarea
+          id="ttsCustomPromptDialogue"
+          placeholder="Custom prompt"
+        ></textarea>
+        <div id="charCount"></div>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="ttsDialogueModel" class="required">Model</label>
+            <select
+              id="ttsDialogueModel"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="ttsDialogueOutputFormat" class="required"
+              >Output Format</label
+            >
+            <select
+              id="ttsDialogueOutputFormat"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="ttsDialogueEmotion">Emotion</label>
+            <input
+              type="text"
+              style="width: 100%; margin-top: 16px"
+              id="ttsDialogueEmotion"
+            />
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="ttsDialogueSpeed" class="required">Speed</label>
+            <input
+              type="number"
+              style="width: 100%; margin-top: 16px"
+              value="1"
+              min="1"
+              step="0.1"
+              id="ttsDialogueSpeed"
+            />
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1">
+            <label for="voice1Id" class="required">Voice 1 ID</label>
+            <input
+              type="text"
+              id="voice1Id"
+              style="width: 100%; margin-top: 8px"
+            />
+          </div>
+          <div style="flex: 1">
+            <label for="voice1Name" class="required">Voice 1 Name</label>
+            <input
+              type="text"
+              id="voice1Name"
+              style="width: 100%; margin-top: 8px"
+            />
+          </div>
+          <div style="flex: 1">
+            <label for="voice2Id">Voice 2 ID</label>
+            <input
+              type="text"
+              id="voice2Id"
+              style="width: 100%; margin-top: 8px"
+            />
+          </div>
+          <div style="flex: 1">
+            <label for="voice2Name">Voice 2 Name</label>
+            <input
+              type="text"
+              id="voice2Name"
+              style="width: 100%; margin-top: 8px"
+            />
+          </div>
+        </div>
+
+        <label for="dialog-container" class="required">Dialog Content</label>
+        <div id="dialog-container"></div>
+
+        <button id="add-dialog" style="max-width: 160px">➕ Add dialog</button>
+
+        <button id="generateTtsDialogueBtn" onclick="generateTtsDialogue()">
+          Generate
+        </button>
+      </div>
+
       <h3>3. Integrate API with your language</h3>
       <p>
         If you want to integrate with the programming languages you are using,
@@ -598,6 +698,102 @@
         const length = ttsText.value.length;
         charCount.textContent = `${length} / ${maxLength}`;
       });
+      let dialogIndex = 0;
+
+function getAvailableVoices() {
+  const voices = [];
+
+  const v1Id = document.getElementById("voice1Id").value.trim();
+  const v1Name = document.getElementById("voice1Name").value.trim();
+  const v2Id = document.getElementById("voice2Id").value.trim();
+  const v2Name = document.getElementById("voice2Name").value.trim();
+
+  if (v1Id && v1Name) {
+    voices.push({ id: v1Id, name: v1Name, label: "Voice 1" });
+  }
+  if (v2Id && v2Name) {
+    voices.push({ id: v2Id, name: v2Name, label: "Voice 2" });
+  }
+
+  return voices;
+}
+
+      function createDialogBlock(index) {
+        const voices = getAvailableVoices();
+
+        const block = document.createElement("div");
+        block.className = "dialog-block";
+        block.style =
+          "border:1px solid #333; padding:12px; border-radius:8px; margin-bottom:12px;";
+
+        let optionsHtml = voices
+  .map((v) => `<option value="${v.id}">${v.label}</option>`)
+  .join("");
+
+        if (!optionsHtml) {
+          optionsHtml = `<option disabled selected>No voice available</option>`;
+        }
+
+        // Nút delete chỉ hiển thị khi có nhiều hơn 1 dialog
+        const deleteBtn =
+          document.querySelectorAll(".dialog-block").length > 0
+            ? `<button onclick="deleteDialog(${index})" style="color:red; background:none; border:none; cursor:pointer;">Delete</button>`
+            : "";
+
+        block.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <select id="voice-select-${index}" style="min-width:150px; max-width:200px;">
+        ${optionsHtml}
+      </select>
+      ${deleteBtn}
+    </div>
+    <textarea id="dialog-${index}" placeholder="Start typing dialog here..." 
+      style="width:100%; height:100px; resize:vertical;"></textarea>
+  `;
+        block.setAttribute("id", `dialog-block-${index}`);
+        return block;
+      }
+
+      function addDialog() {
+        dialogIndex++;
+        const container = document.getElementById("dialog-container");
+        const block = createDialogBlock(dialogIndex);
+        container.appendChild(block);
+      }
+
+      function deleteDialog(index) {
+        const block = document.getElementById(`dialog-block-${index}`);
+        if (block) block.remove();
+      }
+
+      // Khi thay đổi Voice Name -> cập nhật lại dropdown trong các block
+      ["voice1Id", "voice1Name", "voice2Id", "voice2Name"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", () => {
+          const voices = getAvailableVoices();
+          const allBlocks = document.querySelectorAll(".dialog-block");
+
+          allBlocks.forEach((block) => {
+            const select = block.querySelector("select");
+            if (select) {
+              const currentValue = select.value;
+              let html = voices
+  .map((v) => `<option value="${v.id}">${v.label}</option>`)
+  .join("");
+              if (!html) {
+                html = `<option disabled selected>No voice available</option>`;
+              }
+              select.innerHTML = html;
+            }
+          });
+        });
+      });
+
+      document
+        .getElementById("add-dialog")
+        .addEventListener("click", addDialog);
+
+      // Tạo block mặc định
+      addDialog();
     </script>
   </body>
 </html>

@@ -63,6 +63,10 @@ const ttsModelSelect = document.getElementById("ttsModel");
 const ttsOutputFormatSelect = document.getElementById("ttsOutputFormat");
 const dtsModelSelect = document.getElementById("dtsModel");
 const dtsOutputFormatSelect = document.getElementById("dtsOutputFormat");
+const ttsDialogueModelSelect = document.getElementById("ttsDialogueModel");
+const ttsDialogueOutputFormatSelect = document.getElementById(
+  "ttsDialogueOutputFormat"
+);
 
 IMAGE_GEN_ASPECT_RATIOS.forEach((ratio, index) => {
   const div = document.createElement("div");
@@ -159,6 +163,23 @@ TTS_OUTPUT_FORMATS.forEach((style, index) => {
   option.value = style.toLowerCase(); // value có thể là chữ thường
   option.text = style; // hiển thị tên
   if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  ttsDialogueOutputFormatSelect.appendChild(option);
+});
+
+// TTS Dialogue
+Object.keys(TTS_MODELS).forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  ttsDialogueModelSelect.appendChild(option);
+});
+
+TTS_OUTPUT_FORMATS.forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
   dtsOutputFormatSelect.appendChild(option);
 });
 
@@ -193,7 +214,7 @@ async function generateImage() {
   formData.append("prompt", prompt);
   formData.append("model", IMAGE_GEN_MODELS[selectedModelText]);
   formData.append("aspect_ratio", aspectRatio);
-  
+
   if (selectedStyleText !== "None") {
     formData.append("style", selectedStyleText);
   }
@@ -612,3 +633,172 @@ document
       closePopup();
     }
   });
+
+async function generateTtsDialogue() {
+  const apiKey = document.getElementById("apiKeyGenTtsDialogue").value;
+  const customPrompt = document.getElementById("ttsCustomPromptDialogue").value;
+  const model =
+    TTS_MODELS[
+      ttsDialogueModelSelect.options[ttsDialogueModelSelect.selectedIndex].text
+    ];
+  const ttsOutputFormat =
+    ttsDialogueOutputFormatSelect.options[
+      ttsDialogueOutputFormatSelect.selectedIndex
+    ].text;
+  const ttsEmotion = document.getElementById("ttsDialogueEmotion").value;
+  const voice1Id = document.getElementById("voice1Id").value;
+  const voice1Name = document.getElementById("voice1Name").value;
+  const voice2Id = document.getElementById("voice2Id").value;
+  const voice2Name = document.getElementById("voice2Name").value;
+  const ttsSpeed = document.getElementById("ttsSpeed").value || 1;
+
+  if (!apiKey || !model || !ttsOutputFormat || !voice1Id || !voice1Name) {
+    showPopup("Please fill in all required fields!");
+    return;
+  }
+
+  if (ttsSpeed <= 0) {
+    showPopup("Speed required value greater than 0!");
+    return;
+  }
+
+  // Disable button khi bắt đầu gọi API
+  const generateBtn = document.getElementById("generateTtsDialogueBtn");
+  generateBtn.disabled = true;
+  generateBtn.textContent = "Generating...";
+
+  const genImageUrl = BACKEND_URL + "/uapi/v1/tts-multi-speaker";
+
+  const voices = [];
+
+  if (voice1Id && voice1Name) {
+    voices.push({
+      name: "Voice 1",
+      voice: { id: voice1Id, name: voice1Name },
+    });
+  }
+
+  if (voice2Id && voice2Name) {
+    voices.push({
+      name: "Voice 2",
+      voice: { id: voice2Id, name: voice2Name },
+    });
+  }
+
+  // 2. Lấy blocks
+  const blocks = [];
+  const blockEls = document.querySelectorAll("#dialog-container .dialog-block");
+
+  let hasError = false;
+
+  blockEls.forEach((block, idx) => {
+    const select = block.querySelector("select");
+    const textarea = block.querySelector("textarea");
+
+    const text = textarea?.value.trim();
+    const selectedVoice = select?.value;
+
+    if (!selectedVoice) {
+      showPopup(`Block #${idx + 1}: Please select a voice!`);
+      hasError = true;
+      return; // bỏ qua block này
+    }
+
+    if (!text) {
+      showPopup(`Block #${idx + 1}: Text cannot be empty!`);
+      hasError = true;
+      return; // bỏ qua block này
+    }
+
+    // tìm voice label ("Voice 1" / "Voice 2")
+    const voiceObj = voices.find((v) => v.voice.id === selectedVoice);
+    const voiceLabel = voiceObj ? voiceObj.name : "Unknown Voice";
+
+    blocks.push({
+      input: `${voiceLabel}: ${text}`,
+    });
+  });
+
+  if (hasError) {
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generate";
+    return; // dừng luôn, không call API
+  }
+
+  if (blocks.length === 0) {
+    showPopup("Please add at least one dialog block!");
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generate";
+    return;
+  }
+
+  const request_body = {
+    model: model,
+    model_name: model,
+    output_format: ttsOutputFormat.toLowerCase(),
+    speed: parseFloat(ttsSpeed),
+    blocks: blocks,
+    voices: voices,
+  };
+
+  if (ttsEmotion) {
+    request_body.emotion = ttsEmotion;
+  }
+
+  if (customPrompt) {
+    request_body.custom_prompt = customPrompt;
+  }
+
+  try {
+    const response = await fetch(genImageUrl, {
+      method: "POST",
+      headers: {
+        "x-api-key": apiKey,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request_body),
+    });
+
+    if (!response.ok) {
+      // Trường hợp backend trả JSON có error_code / error_message
+      if (response.status >= 400 && response.status < 500) {
+        try {
+          const errData = await response.json();
+          if (errData?.detail?.error_message) {
+            showPopup(errData.detail.error_message);
+          } else {
+            showPopup("Request failed with status " + response.status);
+          }
+        } catch (parseErr) {
+          showPopup("Client error: " + response.status);
+        }
+        return;
+      }
+
+      // Nếu là lỗi đã được mapping sẵn (500, 401,…)
+      const msg =
+        RESPONSE_MESSAGE_MAPPING[response.status] ||
+        "Unexpected error: " + response.status;
+      showPopup(msg);
+      return;
+    }
+
+    showPopup(
+      "Generate speech request initialization successful. Please check the data in your webhook."
+    );
+  } catch (error) {
+    if (!navigator.onLine) {
+      showPopup("No internet connection!");
+    } else if (error instanceof TypeError && error.message.includes("fetch")) {
+      showPopup("CORS blocked the request!");
+    } else {
+      console.error("Error calling API:", error);
+      showPopup("Unexpected error: " + error.message);
+    }
+  } finally {
+    // Enable lại button khi xong
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generate";
+  }
+}

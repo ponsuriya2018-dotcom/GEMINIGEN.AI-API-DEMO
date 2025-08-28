@@ -854,6 +854,212 @@ class Program {
       `.trim(),
     },
   ],
+  tts_multi_speaker: [
+    {
+      lang: "javascript",
+      label: "Javascript",
+      code: `
+const url = "https://api.geminigen.ai/uapi/v1/tts-multi-speaker";
+const headers = {
+  "Content-Type": "application/json",
+  "x-api-key": "<your api key>"
+};
+
+const data = {
+  voices: ["OA001", "OA002"],
+  model_name: "dialogue_model",
+  model: "tts-flash",
+  speed: 1,
+  blocks: [
+    { input: "Welcome to our podcast!" },
+    { input: "Thank you for having me, I'm excited to be here." }
+  ],
+  output_format: "mp3",
+  custom_prompt: "Speak as podcast hosts with energy and engagement",
+  output_channel: "stereo",
+  name: "Podcast Interview"
+};
+
+fetch(url, {
+  method: "POST",
+  headers,
+  body: JSON.stringify(data)
+})
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));
+
+      `.trim(),
+    },
+    {
+      lang: "java",
+      label: "Java",
+      code: `
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        String url = "https://api.geminigen.ai/uapi/v1/tts-multi-speaker";
+
+        // Build JSON bằng code (StringBuilder)
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        jsonBuilder.append("\"voices\":[\"OA001\",\"OA002\"],");
+        jsonBuilder.append("\"model_name\":\"dialogue_model\",");
+        jsonBuilder.append("\"model\":\"tts-flash\",");
+        jsonBuilder.append("\"speed\":1,");
+        jsonBuilder.append("\"blocks\":[");
+        jsonBuilder.append("{\"input\":\"Welcome to our podcast!\"},");
+        jsonBuilder.append("{\"input\":\"Thank you for having me, I'm excited to be here.\"}");
+        jsonBuilder.append("],");
+        jsonBuilder.append("\"output_format\":\"mp3\",");
+        jsonBuilder.append("\"custom_prompt\":\"Speak as podcast hosts with energy and engagement\",");
+        jsonBuilder.append("\"output_channel\":\"stereo\",");
+        jsonBuilder.append("\"name\":\"Podcast Interview\"");
+        jsonBuilder.append("}");
+
+        String json = jsonBuilder.toString();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("x-api-key", "<your api key>")
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+}
+
+
+      `.trim(),
+    },
+    {
+      lang: "python",
+      label: "Python",
+      code: `
+import requests
+
+url = "https://api.geminigen.ai/uapi/v1/tts-multi-speaker"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "<your api key>"
+}
+data = {
+    "voices": ["OA001", "OA002"],
+    "model_name": "dialogue_model",
+    "model": "tts-flash",
+    "speed": 1,
+    "blocks": [
+        {
+            "input": "Welcome to our podcast!"
+        },
+        {
+            "input": "Thank you for having me, I'm excited to be here."
+        }
+    ],
+    "output_format": "mp3",
+    "custom_prompt": "Speak as podcast hosts with energy and engagement",
+    "output_channel": "stereo",
+    "name": "Podcast Interview"
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+
+      `.trim(),
+    },
+    {
+      lang: "php",
+      label: "PHP",
+      code: `
+&lt;?php
+$url = "https://api.geminigen.ai/uapi/v1/tts-multi-speaker";
+
+$data = [
+    "voices" => ["OA001", "OA002"],
+    "model_name" => "dialogue_model",
+    "model" => "tts-flash",
+    "speed" => 1,
+    "blocks" => [
+        ["input" => "Welcome to our podcast!"],
+        ["input" => "Thank you for having me, I'm excited to be here."]
+    ],
+    "output_format" => "mp3",
+    "custom_prompt" => "Speak as podcast hosts with energy and engagement",
+    "output_channel" => "stereo",
+    "name" => "Podcast Interview"
+];
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "x-api-key: <your api key>"
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+$response = curl_exec($ch);
+if (curl_errno($ch)) {
+    echo 'Error: ' . curl_error($ch);
+}
+curl_close($ch);
+
+echo $response;
+      `.trim(),
+    },
+    {
+      lang: "csharp",
+      label: "C#",
+      code: `
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+class Program {
+    static async Task Main(string[] args) {
+        var url = "https://api.geminigen.ai/uapi/v1/tts-multi-speaker";
+        var client = new HttpClient();
+
+        client.DefaultRequestHeaders.Add("x-api-key", "<your api key>");
+
+        // Build JSON bằng Dictionary
+        var data = new Dictionary<string, object> {
+            { "voices", new string[] { "OA001", "OA002" } },
+            { "model_name", "dialogue_model" },
+            { "model", "tts-flash" },
+            { "speed", 1 },
+            { "blocks", new object[] {
+                new Dictionary<string,string>{{"input", "Welcome to our podcast!"}},
+                new Dictionary<string,string>{{"input", "Thank you for having me, I'm excited to be here."}}
+            }},
+            { "output_format", "mp3" },
+            { "custom_prompt", "Speak as podcast hosts with energy and engagement" },
+            { "output_channel", "stereo" },
+            { "name", "Podcast Interview" }
+        };
+
+        string json = JsonSerializer.Serialize(data);
+
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await client.PostAsync(url, content);
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        Console.WriteLine(responseString);
+    }
+}
+      `.trim(),
+    },
+  ],
 };
 
 // Copy function
@@ -958,4 +1164,6 @@ document.querySelector("#video-tabs-container").innerHTML =
   renderTabs("tts") + renderContents("tts");
     document.querySelector("#dts-tabs-container").innerHTML =
   renderTabs("dts") + renderContents("dts");
+      document.querySelector("#tts-multi-speaker-tabs-container").innerHTML =
+  renderTabs("tts_multi_speaker") + renderContents("tts_multi_speaker");
 attachTabEvents();

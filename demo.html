@@ -391,6 +391,86 @@
   }
 }
         </code></pre>
+              <h3>6. Dialogue Gen</h3>
+      <p>
+        The code below we only include required parameters. There are many other
+        fine-tuning parameters you can see more
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.geminigen.ai/resources/dialogue-gen"
+          >here</a
+        >.
+      </p>
+      <div id="tts-multi-speaker-tabs-container"></div>
+      <p>The returned response data format will be (JSON):</p>
+
+      <pre><code class="language-json">
+{
+  "success": true,
+  "result": {
+    "uuid": "f1a2b3c4-d5e6-7f8g-9h0i-j1k2l3m4n5o6",
+    "voices": ["OA001", "OA002"],
+    "model_name": "dialogue_model",
+    "model": "tts-flash",
+    "speed": 1,
+    "blocks": [
+      {
+        "input": "Hello, how are you today?"
+      },
+      {
+        "input": "I am doing great, thank you for asking!"
+      }
+    ],
+    "output_format": "mp3",
+    "custom_prompt": "Speak naturally as if having a casual conversation",
+    "output_channel": "mono",
+    "name": "Casual Conversation",
+    "estimated_credit": 120,
+    "used_credit": 120,
+    "status": 1,
+    "status_percentage": 25,
+    "error_message": "",
+    "created_at": "2024-11-21T14:30:00",
+    "updated_at": "2024-11-21T14:30:00"
+  }
+}
+      </code></pre>
+      <p>The data request to your webhook will be in the form(JSON):</p>
+      <pre><code class="language-json">
+{
+  "event_name": "TTS_MULTI_SPEAKER",
+  "event_uuid": "uuid1",
+  "data": {
+    "id": 12345,
+    "uuid": "img_abc123def456",
+    "user_id": 789,
+    "model_name": "imagen-4",
+    "input_text": "A beautiful sunset over mountains with vibrant colors",
+    "negative_prompt": "",
+    "generate_result": "https://cdn.geminigen.ai/images/img_abc123def456.jpg",
+    "input_file_path": "",
+    "type": "image_generation",
+    "used_credit": 10,
+    "status": 2,
+    "status_desc": "completed",
+    "status_percentage": 100,
+    "error_code": "",
+    "error_message": "",
+    "rating": "",
+    "rating_content": "",
+    "custom_prompt": "",
+    "created_at": "2025-07-21T13:26:53.076Z",
+    "updated_at": "2025-07-21T13:26:53.076Z",
+    "file_size": 2048576,
+    "expired_at": "2025-08-21T13:26:53.076Z",
+    "inference_type": "text_to_image",
+    "name": "Beautiful Sunset Mountains",
+    "created_by": "user_789",
+    "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/img_abc123def456_small.jpg"
+  }
+}
+        </code></pre>
     </main>
 
     <!-- Prism.js -->
