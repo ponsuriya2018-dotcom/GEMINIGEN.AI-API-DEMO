@@ -272,6 +272,9 @@ async function generateImage() {
       imagePreview.innerHTML = "";
       imagePreview.appendChild(imgElement);
     }
+    showPopup(
+      "Image gen request initialization successful. Please check the data in your webhook."
+    );
   } catch (error) {
     if (!navigator.onLine) {
       showPopup("No internet connection!");
@@ -652,7 +655,7 @@ async function generateTtsDialogue() {
   const voice2Name = document.getElementById("voice2Name").value;
   const ttsSpeed = document.getElementById("ttsSpeed").value || 1;
 
-  if (!apiKey || !model || !ttsOutputFormat || !voice1Id || !voice1Name) {
+  if (!apiKey || !model || !ttsOutputFormat || !voice1Id || !voice1Name || !voice2Id || !voice2Name) {
     showPopup("Please fill in all required fields!");
     return;
   }

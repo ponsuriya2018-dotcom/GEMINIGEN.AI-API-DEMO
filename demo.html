@@ -159,34 +159,18 @@
       <pre><code class="language-json">
 {
   "event_name": "IMAGE_GENERATION_COMPLETED",
-  "event_uuid": "uuid1",
+  "event_uuid": "0cea9414-8566-11f0-aeae-ce29e8fcb7da",
   "data": {
-    "id": 12345,
-    "uuid": "img_abc123def456",
-    "user_id": 789,
-    "model_name": "imagen-4",
-    "input_text": "A beautiful sunset over mountains with vibrant colors",
-    "negative_prompt": "",
-    "generate_result": "https://cdn.geminigen.ai/images/img_abc123def456.jpg",
-    "input_file_path": "",
-    "type": "image_generation",
-    "used_credit": 10,
+    "uuid": "00710a10-8566-11f0-aeae-ce29e8fcb7da",
+    "model_name": "imagen-flash",
+    "input_text": "Create a dog eat pizza",
+    "used_credit": 0,
     "status": 2,
-    "status_desc": "completed",
     "status_percentage": 100,
-    "error_code": "",
     "error_message": "",
-    "rating": "",
-    "rating_content": "",
-    "custom_prompt": "",
-    "created_at": "2025-07-21T13:26:53.076Z",
-    "updated_at": "2025-07-21T13:26:53.076Z",
-    "file_size": 2048576,
-    "expired_at": "2025-08-21T13:26:53.076Z",
-    "inference_type": "text_to_image",
-    "name": "Beautiful Sunset Mountains",
-    "created_by": "user_789",
-    "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/img_abc123def456_small.jpg"
+    "media_url": "https://fa1030eacc97e2f2ca187ef328dddf17.r2.cloudflarestorage.com/geminigen-dev-upload-bucket/47/generated_result/image/00710a10-8566-11f0-aeae-ce29e8fcb7da/gen/00710a10-8566-11f0-aeae-ce29e8fcb7da_0.png?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=9e4aaa0a83527e9fde114e51284a68ed%2F20250830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250830T055618Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=56ba151acf556f7018bd236605c9704f471db2de47e9a0b96e183d54204af98c",
+    "created_at": "2025-08-30T05:55:58",
+    "updated_at": "2025-08-30T05:56:17"
   }
 }
       </code></pre>
@@ -206,72 +190,46 @@
 
       <pre><code class="language-json">
 {
-  "id": 12345,
-  "uuid": "vid_abc123def456",
-  "user_id": 789,
-  "model_name": "veo-3",
-  "input_text": "A serene lake surrounded by mountains at sunset with gentle waves",
-  "negative_prompt": "",
-  "generate_result": "https://cdn.geminigen.ai/videos/vid_abc123def456.mp4",
-  "input_file_path": "",
-  "type": "video_generation",
-  "used_credit": 50,
-  "status": 2,
-  "status_desc": "completed",
-  "status_percentage": 100,
+  "id": 52726,
+  "uuid": "f9918af0-84a0-11f0-9ff3-5ed40afdc636",
+  "user_id": 31,
+  "model_name": "veo-2",
+  "input_text": "Cat is running",
+  "type": "video",
+  "status": 1,
+  "status_desc": "",
+  "status_percentage": 1,
   "error_code": "",
   "error_message": "",
-  "rating": "",
-  "rating_content": "",
   "custom_prompt": "",
-  "created_at": "2025-07-21T13:26:53.076Z",
-  "updated_at": "2025-07-21T13:26:53.076Z",
-  "file_size": 10485760,
-  "expired_at": "2025-08-21T13:26:53.076Z",
-  "inference_type": "text_to_video",
-  "name": "Serene Lake Sunset",
-  "created_by": "user_789",
-  "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/vid_abc123def456_small.jpg",
-  "duration": 5,
-  "resolution": "720p",
-  "aspect_ratio": "16:9"
+  "file_size": 0,
+  "file_password": "",
+  "expired_at": null,
+  "name": null,
+  "emotion": null,
+  "estimated_credit": 60000,
+  "media_type": "video",
+  "created_at": "2025-08-29T06:25:36",
+  "updated_at": null
 }
       </code></pre>
       <p>The data request to your webhook will be in the form(JSON):</p>
       <pre><code class="language-json">
 {
   "event_name": "VIDEO_GENERATION_COMPLETED",
-  "event_uuid": "uuid1",
+  "event_uuid": "9e44cd04-84a2-11f0-b801-5ed40afdc636",
   "data": {
-    "id": 12345,
-    "uuid": "vid_abc123def456",
-    "user_id": 789,
-    "model_name": "veo-3",
-    "input_text": "A serene lake surrounded by mountains at sunset with gentle waves",
-    "negative_prompt": "",
-    "generate_result": "https://cdn.geminigen.ai/videos/vid_abc123def456.mp4",
-    "input_file_path": "",
-    "type": "video_generation",
-    "used_credit": 50,
+    "uuid": "765efd78-84a2-11f0-b801-5ed40afdc636",
+    "model_name": "veo-2",
+    "input_text": "Dog is running",
+    "used_credit": 60000,
     "status": 2,
-    "status_desc": "completed",
     "status_percentage": 100,
-    "error_code": "",
     "error_message": "",
-    "rating": "",
-    "rating_content": "",
-    "custom_prompt": "",
-    "created_at": "2025-07-21T13:26:53.076Z",
-    "updated_at": "2025-07-21T13:26:53.076Z",
-    "file_size": 10485760,
-    "expired_at": "2025-08-21T13:26:53.076Z",
-    "inference_type": "text_to_video",
-    "name": "Serene Lake Sunset",
-    "created_by": "user_789",
-    "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/vid_abc123def456_small.jpg",
-    "duration": 5,
-    "resolution": "720p",
-    "aspect_ratio": "16:9"
+    "media_url": "https://87c129bea46e5e69d2d92f9b9ef83ca8.r2.cloudflarestorage.com/geminigen-prd-upload-bucket/31/generated_result/video/765efd78-84a2-11f0-b801-5ed40afdc636/765efd78-84a2-11f0-b801-5ed40afdc636_0.mp4?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=852af3549a421613746f7c16fc8699f5%2F20250829%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250829T063721Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=6c98a4ab32eed528649161caa2557d70350b2c5671ca2f04fc058acc4e398c8b",
+    "thumbnail_url": "https://cdn.geminigen.ai/thumbnails/31/765efd78-84a2-11f0-b801-5ed40afdc636/765efd78-84a2-11f0-b801-5ed40afdc636_0_200px.jpg",
+    "created_at": "2025-08-29T06:36:15",
+    "updated_at": "2025-08-29T06:37:19"
   }
 }
         </code></pre>
@@ -291,44 +249,62 @@
 
       <pre><code class="language-json">
 {
-  "success": true,
-  "result": {
-    "uuid": "eef94c08-a806-11ef-b617-22023a24db09",
-    "voice_id": "OA001",
-    "speed": 1,
-    "model": "tts-1",
-    "tts_input": "Hello, my name is GeminiGen.AI. I am a text-to-speech model.",
-    "estimated_credit": 54,
-    "used_credit": 54,
-    "status": 1,
-    "status_percentage": 50,
-    "error_message": "",
-    "speaker_name": "Alloy",
-    "created_at": "2024-11-21T12:48:40",
-    "updated_at": "2024-11-21T12:48:40"
-  }
+    "success": true,
+    "result": {
+        "id": 52729,
+        "uuid": "317f693e-84a4-11f0-b19e-5ed40afdc636",
+        "user_id": 31,
+        "model_name": "tts-flash",
+        "input_text": "Hello world, I am Long",
+        "generate_result": null,
+        "input_file_path": null,
+        "type": "tts-text",
+        "used_credit": 0,
+        "status": 1,
+        "status_desc": "",
+        "status_percentage": 50,
+        "error_code": "",
+        "error_message": "",
+        "rating": "",
+        "rating_content": "",
+        "custom_prompt": null,
+        "created_at": "2025-08-29T06:48:38",
+        "updated_at": null,
+        "file_size": 0,
+        "file_password": "",
+        "expired_at": null,
+        "inference_type": "gemini_voice",
+        "name": "Hello world, I am Long",
+        "created_by": "API",
+        "is_premium_credit": true,
+        "emotion": null,
+        "note": "logged-in user: 31, plan_id PP0001",
+        "estimated_credit": 44,
+        "ai_credit": 0,
+        "media_type": "audio",
+        "service_mode": null
+    }
 }
       </code></pre>
       <p>The data request to your webhook will be in the form(JSON):</p>
       <pre><code class="language-json">
 {
   "event_name": "TTS_TEXT_SUCCESS",
-  "event_uuid": "uuid1",
+  "event_uuid": "4133e0a8-84a4-11f0-8e02-5ed40afdc636",
   "data": {
-    "uuid": "eef94c08-a806-11ef-b617-22023a24db09",
-    "voice_id": "OA001",
+    "uuid": "317f693e-84a4-11f0-b19e-5ed40afdc636",
+    "voices": [],
     "speed": 1,
-    "model": "tts-1",
-    "tts_input": "Hello, my name is GeminiGen.AI. I am a text-to-speech model.",
-    "estimated_credit": 54,
-    "used_credit": 54,
-    "status": 1,
-    "status_percentage": 50,
+    "model_name": "tts-flash",
+    "input_text": "Hello world, I am Long",
+    "estimated_credit": 44,
+    "used_credit": 44,
+    "status": 2,
+    "status_percentage": 100,
     "error_message": "",
-    "speaker_name": "Alloy",
-    "media_url": "https://cdn.geminigen.ai/tts/tts_abc123def456.mp3",
-    "created_at": "2024-11-21T12:48:40",
-    "updated_at": "2024-11-21T12:48:40"
+    "created_at": "2025-08-29T06:48:38",
+    "updated_at": "2025-08-29T06:49:01",
+    "media_url": "https://87c129bea46e5e69d2d92f9b9ef83ca8.r2.cloudflarestorage.com/geminigen-prd-upload-bucket/31/generated_result/audio/20250829_064844_598020/Hello_world__I_am_Long.mp3?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=852af3549a421613746f7c16fc8699f5%2F20250829%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250829T064903Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a4d25fe0f3507dbab8a398203ac8b4351c698d5342c02c4fa5eb07338f346ba2"
   }
 }
         </code></pre>
@@ -345,25 +321,42 @@
       </p>
       <div id="dts-tabs-container"></div>
       <p>The returned response data format will be (JSON):</p>
-
       <pre><code class="language-json">
 {
   "success": true,
   "result": {
-    "uuid": "4a7693ee-aa35-11ef-bfda-7eba07618aa0",
-    "voice_id": "OA001",
-    "speed": 1,
-    "model": "tts-1",
-    "tts_input": "5101447014.pdf",
-    "estimated_credit": 0,
+    "id": 52730,
+    "uuid": "03b0f152-84a5-11f0-b744-5ed40afdc636",
+    "user_id": 31,
+    "model_name": "tts-flash",
+    "input_text": "yeucau.txt",
+    "generate_result": null,
+    "input_file_path": null,
+    "type": "tts-document",
     "used_credit": 0,
     "status": 1,
+    "status_desc": "",
     "status_percentage": 1,
+    "error_code": "",
     "error_message": "",
-    "speaker_name": "Alloy",
-    "created_at": "2024-11-24T07:25:33",
-    "updated_at": "2024-11-24T07:25:33",
-    "file_size": 98842
+    "rating": "",
+    "rating_content": "",
+    "custom_prompt": null,
+    "created_at": "2025-08-29T06:54:31",
+    "updated_at": null,
+    "file_size": 599,
+    "file_password": null,
+    "expired_at": null,
+    "inference_type": "gemini_voice",
+    "name": "yeucau.txt",
+    "created_by": "API",
+    "is_premium_credit": true,
+    "emotion": null,
+    "note": null,
+    "estimated_credit": 0,
+    "ai_credit": 0,
+    "media_type": "audio",
+    "service_mode": null
   }
 }
       </code></pre>
@@ -371,23 +364,22 @@
       <pre><code class="language-json">
 {
   "event_name": "TTS_DOCUMENT_SUCCESS",
-  "event_uuid": "uuid1",
+  "event_uuid": "926d91e2-85b9-11f0-a452-5a8eb76a5ed6",
   "data": {
-    "uuid": "4a7693ee-aa35-11ef-bfda-7eba07618aa0",
-    "voice_id": "OA001",
+    "uuid": "58e60b8e-85b9-11f0-b19e-5ed40afdc636",
+    "voices": [],
     "speed": 1,
-    "model": "tts-1",
-    "tts_input": "5101447014.pdf",
-    "estimated_credit": 0,
-    "used_credit": 0,
-    "status": 1,
-    "status_percentage": 1,
+    "model_name": "tts-flash",
+    "input_text": "yeucau.txt",
+    "estimated_credit": 1026,
+    "used_credit": 1022,
+    "status": 2,
+    "status_percentage": 100,
     "error_message": "",
-    "speaker_name": "Alloy",
-    "media_url": "https://cdn.geminigen.ai/tts/tts_abc123def456.mp3",
-    "created_at": "2024-11-24T07:25:33",
-    "updated_at": "2024-11-24T07:25:33",
-    "file_size": 98842
+    "created_at": "2025-08-30T15:52:35",
+    "updated_at": "2025-08-30T15:54:07",
+    "media_url": "https://87c129bea46e5e69d2d92f9b9ef83ca8.r2.cloudflarestorage.com/geminigen-prd-upload-bucket/31/generated_result/audio/20250830_155400_704043/yeucau.mp3?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=852af3549a421613746f7c16fc8699f5%2F20250830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250830T155412Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d2cf604e6004d6a9f11788cf7f7c57e1ba49a2d289a655553b11100c525e13e9",
+    "file_size": 599
   }
 }
         </code></pre>
@@ -407,67 +399,62 @@
 
       <pre><code class="language-json">
 {
-  "success": true,
-  "result": {
-    "uuid": "f1a2b3c4-d5e6-7f8g-9h0i-j1k2l3m4n5o6",
-    "voices": ["OA001", "OA002"],
-    "model_name": "dialogue_model",
-    "model": "tts-flash",
-    "speed": 1,
-    "blocks": [
-      {
-        "input": "Hello, how are you today?"
-      },
-      {
-        "input": "I am doing great, thank you for asking!"
-      }
-    ],
-    "output_format": "mp3",
-    "custom_prompt": "Speak naturally as if having a casual conversation",
-    "output_channel": "mono",
-    "name": "Casual Conversation",
-    "estimated_credit": 120,
-    "used_credit": 120,
-    "status": 1,
-    "status_percentage": 25,
-    "error_message": "",
-    "created_at": "2024-11-21T14:30:00",
-    "updated_at": "2024-11-21T14:30:00"
-  }
+    "success": true,
+    "result": {
+        "id": 1659,
+        "uuid": "faaf4ea4-858b-11f0-b20a-ce29e8fcb7da",
+        "user_id": 47,
+        "model_name": "tts-flash",
+        "input_text": "Voice 1: Hello world, I am Long. test AI Dialogue Generator",
+        "generate_result": null,
+        "input_file_path": null,
+        "type": "tts-multi-speaker",
+        "used_credit": 0,
+        "status": 1,
+        "status_desc": "",
+        "status_percentage": 50,
+        "error_code": "",
+        "error_message": "",
+        "rating": "",
+        "rating_content": "",
+        "custom_prompt": null,
+        "created_at": "2025-08-30T10:27:50",
+        "updated_at": null,
+        "file_size": 0,
+        "file_password": "",
+        "expired_at": null,
+        "inference_type": "gemini_voice",
+        "name": "Voice 1: Hello world, I am Long. test AI Dialogue ",
+        "created_by": "API",
+        "is_premium_credit": true,
+        "emotion": null,
+        "note": "logged-in user: 47, plan_id PP0001",
+        "estimated_credit": 118,
+        "ai_credit": 0,
+        "media_type": "audio",
+        "service_mode": null
+    }
 }
       </code></pre>
       <p>The data request to your webhook will be in the form(JSON):</p>
       <pre><code class="language-json">
 {
-  "event_name": "TTS_MULTI_SPEAKER",
-  "event_uuid": "uuid1",
+  "event_name": "TTS_TEXT_SUCCESS",
+  "event_uuid": "9f2a12f6-864b-11f0-ab99-667310249fb6",
   "data": {
-    "id": 12345,
-    "uuid": "img_abc123def456",
-    "user_id": 789,
-    "model_name": "imagen-4",
-    "input_text": "A beautiful sunset over mountains with vibrant colors",
-    "negative_prompt": "",
-    "generate_result": "https://cdn.geminigen.ai/images/img_abc123def456.jpg",
-    "input_file_path": "",
-    "type": "image_generation",
-    "used_credit": 10,
+    "uuid": "9016a7de-864b-11f0-b30a-667310249fb6",
+    "voices": [],
+    "speed": 1,
+    "model_name": "tts-flash",
+    "input_text": "Voice 1: Hello world, I am Long",
+    "estimated_credit": 62,
+    "used_credit": 62,
     "status": 2,
-    "status_desc": "completed",
     "status_percentage": 100,
-    "error_code": "",
     "error_message": "",
-    "rating": "",
-    "rating_content": "",
-    "custom_prompt": "",
-    "created_at": "2025-07-21T13:26:53.076Z",
-    "updated_at": "2025-07-21T13:26:53.076Z",
-    "file_size": 2048576,
-    "expired_at": "2025-08-21T13:26:53.076Z",
-    "inference_type": "text_to_image",
-    "name": "Beautiful Sunset Mountains",
-    "created_by": "user_789",
-    "thumbnail_small": "https://cdn.geminigen.ai/thumbnails/img_abc123def456_small.jpg"
+    "created_at": "2025-08-31T09:19:14",
+    "updated_at": "2025-08-31T09:19:36",
+    "media_url": "https://87c129bea46e5e69d2d92f9b9ef83ca8.r2.cloudflarestorage.com/geminigen-prd-upload-bucket/31/generated_result/audio/20250831_091919_007294/Voice_1__Hello_world__I_am_Long.mp3?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=852af3549a421613746f7c16fc8699f5%2F20250831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250831T091938Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e8f610edeb59a3792f65c3dad5d01d6efc38d998b610aaf14d4208f11debef62"
   }
 }
         </code></pre>

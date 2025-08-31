@@ -592,7 +592,7 @@
             />
           </div>
           <div style="flex: 1">
-            <label for="voice2Id">Voice 2 ID</label>
+            <label for="voice2Id" class="required">Voice 2 ID</label>
             <input
               type="text"
               id="voice2Id"
@@ -600,7 +600,7 @@
             />
           </div>
           <div style="flex: 1">
-            <label for="voice2Name">Voice 2 Name</label>
+            <label for="voice2Name" class="required">Voice 2 Name</label>
             <input
               type="text"
               id="voice2Name"
@@ -700,23 +700,23 @@
       });
       let dialogIndex = 0;
 
-function getAvailableVoices() {
-  const voices = [];
+      function getAvailableVoices() {
+        const voices = [];
 
-  const v1Id = document.getElementById("voice1Id").value.trim();
-  const v1Name = document.getElementById("voice1Name").value.trim();
-  const v2Id = document.getElementById("voice2Id").value.trim();
-  const v2Name = document.getElementById("voice2Name").value.trim();
+        const v1Id = document.getElementById("voice1Id").value.trim();
+        const v1Name = document.getElementById("voice1Name").value.trim();
+        const v2Id = document.getElementById("voice2Id").value.trim();
+        const v2Name = document.getElementById("voice2Name").value.trim();
 
-  if (v1Id && v1Name) {
-    voices.push({ id: v1Id, name: v1Name, label: "Voice 1" });
-  }
-  if (v2Id && v2Name) {
-    voices.push({ id: v2Id, name: v2Name, label: "Voice 2" });
-  }
+        if (v1Id && v1Name) {
+          voices.push({ id: v1Id, name: v1Name, label: "Voice 1" });
+        }
+        if (v2Id && v2Name) {
+          voices.push({ id: v2Id, name: v2Name, label: "Voice 2" });
+        }
 
-  return voices;
-}
+        return voices;
+      }
 
       function createDialogBlock(index) {
         const voices = getAvailableVoices();
@@ -727,8 +727,8 @@ function getAvailableVoices() {
           "border:1px solid #333; padding:12px; border-radius:8px; margin-bottom:12px;";
 
         let optionsHtml = voices
-  .map((v) => `<option value="${v.id}">${v.label}</option>`)
-  .join("");
+          .map((v) => `<option value="${v.id}">${v.label}</option>`)
+          .join("");
 
         if (!optionsHtml) {
           optionsHtml = `<option disabled selected>No voice available</option>`;
@@ -777,8 +777,8 @@ function getAvailableVoices() {
             if (select) {
               const currentValue = select.value;
               let html = voices
-  .map((v) => `<option value="${v.id}">${v.label}</option>`)
-  .join("");
+                .map((v) => `<option value="${v.id}">${v.label}</option>`)
+                .join("");
               if (!html) {
                 html = `<option disabled selected>No voice available</option>`;
               }
