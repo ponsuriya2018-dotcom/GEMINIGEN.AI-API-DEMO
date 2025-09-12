@@ -52,6 +52,107 @@ TTS_OUTPUT_FORMATS = ["MP3", "WAV"];
 const VIDEO_GEN_RESOLUTIONS = ["720p", "1080p"];
 const VIDEO_GEN_ASPECT_RATIOS = ["16:9", "9:16"];
 
+GEN_TEXT_MODELS = {
+  "gemini-2.5-flash": "gemini-2.5-flash",
+  "gemini-2.5-pro": "gemini-2.5-pro",
+};
+
+const MIME_TYPES = [
+  // Text
+  "text/plain",
+  "text/html",
+  "text/css",
+  "text/javascript",
+  "text/csv",
+  "text/xml",
+  "text/markdown",
+  "text/calendar",
+  "text/rtf",
+
+  // JSON / XML
+  "application/json",
+  "application/ld+json",
+  "application/xml",
+  "application/rss+xml",
+  "application/atom+xml",
+
+  // Images
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "image/bmp",
+  "image/svg+xml",
+  "image/tiff",
+  "image/x-icon",
+  "image/heif",
+  "image/heic",
+  "image/avif",
+
+  // Audio
+  "audio/mpeg",
+  "audio/wav",
+  "audio/ogg",
+  "audio/webm",
+  "audio/aac",
+  "audio/flac",
+  "audio/midi",
+  "audio/x-midi",
+  "audio/3gpp",
+  "audio/3gpp2",
+  "audio/amr",
+
+  // Video
+  "video/mp4",
+  "video/mpeg",
+  "video/ogg",
+  "video/webm",
+  "video/quicktime",
+  "video/x-msvideo", // avi
+  "video/x-ms-wmv",
+  "video/3gpp",
+  "video/3gpp2",
+  "video/x-flv",
+  "video/h265",
+  "video/h264",
+
+  // Documents
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.oasis.opendocument.text",
+  "application/vnd.oasis.opendocument.spreadsheet",
+  "application/vnd.oasis.opendocument.presentation",
+
+  // Archives
+  "application/zip",
+  "application/x-7z-compressed",
+  "application/x-tar",
+  "application/x-rar-compressed",
+  "application/gzip",
+  "application/x-bzip2",
+
+  // Fonts
+  "font/otf",
+  "font/ttf",
+  "font/woff",
+  "font/woff2",
+
+  // Special
+  "application/x-sh", // shell script
+  "application/x-python", // python script
+  "application/x-httpd-php",
+  "application/sql",
+  "application/graphql",
+  "application/x-www-form-urlencoded",
+  "multipart/form-data",
+  "application/octet-stream",
+];
+
 const container = document.getElementById("aspectRatioContainer");
 const imageGenStyleSelect = document.getElementById("imageGenStyle");
 const imageGenModelSelect = document.getElementById("imageGenModel");
@@ -66,6 +167,10 @@ const dtsOutputFormatSelect = document.getElementById("dtsOutputFormat");
 const ttsDialogueModelSelect = document.getElementById("ttsDialogueModel");
 const ttsDialogueOutputFormatSelect = document.getElementById(
   "ttsDialogueOutputFormat"
+);
+const textGenModelSelect = document.getElementById("textGenModel");
+const textGenResponseMimeTypeSelect = document.getElementById(
+  "textGenResponseMimeType"
 );
 
 IMAGE_GEN_ASPECT_RATIOS.forEach((ratio, index) => {
@@ -182,6 +287,65 @@ TTS_OUTPUT_FORMATS.forEach((style, index) => {
   if (index === 0) option.selected = true; // mặc định chọn cái đầu
   dtsOutputFormatSelect.appendChild(option);
 });
+
+Object.keys(GEN_TEXT_MODELS).forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  textGenModelSelect.appendChild(option);
+});
+
+MIME_TYPES.forEach((style, index) => {
+  const option = document.createElement("option");
+  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.text = style; // hiển thị tên
+  if (index === 0) option.selected = true; // mặc định chọn cái đầu
+  textGenResponseMimeTypeSelect.appendChild(option);
+});
+
+let videoUrls = [];
+
+function addVideoUrl() {
+  const input = document.getElementById("videoUrlInput");
+  const url = input.value.trim();
+  if (url && isValidHttpUrl(url)) {
+    videoUrls.push(url);
+    input.value = "";
+    renderVideoUrlList();
+  } else {
+    showPopup("Please enter a valid URL.");
+  }
+}
+
+function removeVideoUrl(index) {
+  videoUrls.splice(index, 1);
+  renderVideoUrlList();
+}
+
+function renderVideoUrlList() {
+  const list = document.getElementById("videoUrlList");
+  list.innerHTML = "";
+  videoUrls.forEach((url, index) => {
+    const li = document.createElement("li");
+    li.style.marginBottom = "6px";
+    li.innerHTML = `
+        <span>${url}</span>
+        <button type="button" onclick="removeVideoUrl(${index})" style="margin-left: 10px">Remove</button>
+      `;
+    list.appendChild(li);
+  });
+}
+
+function isValidHttpUrl(string) {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
 
 async function generateImage() {
   const apiKey = document.getElementById("apiKey").value.trim();
@@ -655,7 +819,15 @@ async function generateTtsDialogue() {
   const voice2Name = document.getElementById("voice2Name").value;
   const ttsSpeed = document.getElementById("ttsSpeed").value || 1;
 
-  if (!apiKey || !model || !ttsOutputFormat || !voice1Id || !voice1Name || !voice2Id || !voice2Name) {
+  if (
+    !apiKey ||
+    !model ||
+    !ttsOutputFormat ||
+    !voice1Id ||
+    !voice1Name ||
+    !voice2Id ||
+    !voice2Name
+  ) {
     showPopup("Please fill in all required fields!");
     return;
   }
@@ -789,6 +961,185 @@ async function generateTtsDialogue() {
 
     showPopup(
       "Generate speech request initialization successful. Please check the data in your webhook."
+    );
+  } catch (error) {
+    if (!navigator.onLine) {
+      showPopup("No internet connection!");
+    } else if (error instanceof TypeError && error.message.includes("fetch")) {
+      showPopup("CORS blocked the request!");
+    } else {
+      console.error("Error calling API:", error);
+      showPopup("Unexpected error: " + error.message);
+    }
+  } finally {
+    // Enable lại button khi xong
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generate";
+  }
+}
+
+async function generateText() {
+  const apiKey = document.getElementById("apiKeyGenText").value;
+  const prompt = document.getElementById("textGenPrompt").value;
+  const selectedModelText =
+    textGenModelSelect.options[textGenModelSelect.selectedIndex].text;
+  const model = GEN_TEXT_MODELS[selectedModelText];
+  const textGenResponseMimeType =
+    textGenResponseMimeTypeSelect.options[
+      textGenResponseMimeTypeSelect.selectedIndex
+    ].text;
+  const textGenSystemIntruction = document.getElementById(
+    "textGenSystemIntruction"
+  ).value;
+  const textGenThinkingBudget = document.getElementById(
+    "textGenThinkingBudget"
+  ).value;
+  const textGenTemperature =
+    document.getElementById("textGenTemperature").value;
+  const textGenFps = document.getElementById("textGenFps").value;
+  const textGenStartOffset =
+    document.getElementById("textGenStartOffset").value;
+  const textGenEndOffset = document.getElementById("textGenEndOffset").value;
+
+  // Array url từ logic bạn đã code
+  // (ví dụ: let videoUrls = ["https://abc.com/vid1.mp4", "https://xyz.com/vid2.mp4"])
+  const urlVideos = videoUrls || [];
+
+  if (!apiKey || !prompt || !selectedModelText) {
+    showPopup("Please fill in all required fields!");
+    return;
+  }
+
+  // Disable button khi bắt đầu gọi API
+  const generateBtn = document.getElementById("generateTtsDialogueBtn");
+  generateBtn.disabled = true;
+  generateBtn.textContent = "Generating...";
+
+  const genTextUrl = BACKEND_URL + "/uapi/v1/text/generate";
+
+  const formData = new FormData();
+  formData.append("prompt", prompt);
+  formData.append("model", model);
+  formData.append("response_mime_type", textGenResponseMimeType);
+
+  // System intruction
+  if (
+    textGenSystemIntruction !== null &&
+    textGenSystemIntruction.trim() !== ""
+  ) {
+    formData.append("system_instruction", textGenSystemIntruction);
+  }
+
+  // Thinking Budget
+  if (textGenThinkingBudget !== null && textGenThinkingBudget.trim() !== "") {
+    const parsedBudget = parseInt(textGenThinkingBudget, 10);
+    if (!isNaN(parsedBudget)) {
+      formData.append("thinking_budget", parsedBudget);
+    }
+  }
+
+  // Temperature
+  if (textGenTemperature !== null && textGenTemperature.trim() !== "") {
+    const parsedTemp = parseFloat(textGenTemperature);
+    if (!isNaN(parsedTemp)) {
+      formData.append("temperature", parsedTemp);
+    }
+  }
+
+  // FPS
+  if (textGenFps !== null && textGenFps.trim() !== "") {
+    const parsedFps = parseInt(textGenFps, 10);
+    if (!isNaN(parsedFps)) {
+      formData.append("fps", parsedFps);
+    }
+  }
+
+  // Start Offset
+  if (textGenStartOffset !== null && textGenStartOffset.trim() !== "") {
+    const parsedStart = parseInt(textGenStartOffset, 10);
+    if (!isNaN(parsedStart)) {
+      formData.append("start_offset", parsedStart);
+    }
+  }
+
+  // End Offset
+  if (textGenEndOffset !== null && textGenEndOffset.trim() !== "") {
+    const parsedEnd = parseInt(textGenEndOffset, 10);
+    if (!isNaN(parsedEnd)) {
+      formData.append("end_offset", parsedEnd);
+    }
+  }
+
+  const imagesInput = document.getElementById("textGenImagesFile");
+  if (imagesInput.files.length > 0) {
+    for (let file of imagesInput.files) {
+      formData.append("images", file);
+    }
+  }
+
+  const audiosInput = document.getElementById("textGenAudiosFile");
+  if (audiosInput.files.length > 0) {
+    for (let file of audiosInput.files) {
+      formData.append("audio_files", file);
+    }
+  }
+
+  const docsInput = document.getElementById("uploadGenDocumentsFile");
+  if (docsInput.files.length > 0) {
+    for (let file of docsInput.files) {
+      formData.append("document_files", file);
+    }
+  }
+
+  const videosInput = document.getElementById("uploadGenVideosFile");
+  if (videosInput.files.length > 0) {
+    for (let file of videosInput.files) {
+      formData.append("videos", file);
+    }
+  }
+
+  // Append url video array
+  if (urlVideos && urlVideos.length > 0) {
+    urlVideos.forEach((url) => {
+      formData.append("url_video", url);
+    });
+  }
+  try {
+    const response = await fetch(genTextUrl, {
+      method: "POST",
+      headers: {
+        "x-api-key": apiKey,
+        Accept: "application/json",
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      // Trường hợp backend trả JSON có error_code / error_message
+      if (response.status >= 400 && response.status < 500) {
+        try {
+          const errData = await response.json();
+          if (errData?.detail?.error_message) {
+            showPopup(errData.detail.error_message);
+          } else {
+            showPopup("Request failed with status " + response.status);
+          }
+        } catch (parseErr) {
+          showPopup("Client error: " + response.status);
+        }
+        return;
+      }
+
+      // Nếu là lỗi đã được mapping sẵn (500, 401,…)
+      const msg =
+        RESPONSE_MESSAGE_MAPPING[response.status] ||
+        "Unexpected error: " + response.status;
+      showPopup(msg);
+      return;
+    }
+
+    showPopup(
+      "Generate text request initialization successful. Please check the data in your webhook."
     );
   } catch (error) {
     if (!navigator.onLine) {

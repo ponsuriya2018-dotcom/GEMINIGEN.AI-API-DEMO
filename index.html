@@ -619,6 +619,154 @@
         </button>
       </div>
 
+      <h4>AI Text Generator</h4>
+      <p>generating text from a prompt</p>
+      <div class="gen-container">
+        <label for="apiKeyGenText" class="required">API Key</label>
+        <input
+          type="text"
+          id="apiKeyGenText"
+          placeholder="Enter your API key"
+        />
+
+        <label for="textGenPrompt" class="required">Prompt</label>
+        <textarea id="textGenPrompt" placeholder="Ask GeminiGen"></textarea>
+
+        <label for="textGenSystemIntruction">System intruction</label>
+        <textarea
+          id="textGenSystemIntruction"
+          placeholder="Your intruction"
+        ></textarea>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenModel" class="required">Model</label>
+            <select
+              id="textGenModel"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenResponseMimeType">Response Mime Type</label>
+            <select
+              id="textGenResponseMimeType"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenThinkingBudget">Thinking Budget</label>
+            <input
+              type="number"
+              style="width: 100%; margin-top: 16px"
+              min="-1"
+              step="1"
+              id="textGenThinkingBudget"
+            />
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenTemperature">Temperature</label>
+            <input
+              type="number"
+              style="width: 100%; margin-top: 16px"
+              step="1"
+              id="textGenTemperature"
+            />
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenFps">FPS</label>
+            <input
+              type="number"
+              style="width: 100%; margin-top: 16px"
+              step="1"
+              id="textGenFps"
+            />
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenStartOffset">Start offset</label>
+            <input
+              type="text"
+              style="width: 100%; margin-top: 16px"
+              id="textGenStartOffset"
+            />
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="textGenEndOffset">End offset</label>
+            <input
+              type="text"
+              style="width: 100%; margin-top: 16px"
+              id="textGenEndOffset"
+            />
+          </div>
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="textGenImagesFile">Images Reference</label>
+          <input
+            type="file"
+            multiple
+            id="textGenImagesFile"
+            accept="image/*"
+            style="margin-left: 8px"
+          />
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="textGenAudiosFile">Audios Reference</label>
+          <input
+            type="file"
+            id="textGenAudiosFile"
+            accept="audio/*"
+            multiple
+            style="margin-left: 8px"
+          />
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="uploadGenDocumentsFile">Documents Reference</label>
+          <input
+            type="file"
+            multiple
+            id="uploadGenDocumentsFile"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.txt"
+            style="margin-left: 8px"
+          />
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="uploadGenVideosFile">Videos Reference</label>
+          <input
+            type="file"
+            id="uploadGenVideosFile"
+            accept="video/*"
+            multiple
+            style="margin-left: 8px"
+          />
+        </div>
+
+        <div style="margin-top: 20px">
+          <label for="videoUrlInput">Video URLs</label>
+          <div style="display: flex; gap: 10px; margin-top: 8px">
+            <input
+              type="url"
+              id="videoUrlInput"
+              placeholder="Enter video URL"
+              style="flex: 1"
+            />
+            <button type="button" onclick="addVideoUrl()">Add</button>
+          </div>
+          <ul
+            id="videoUrlList"
+            style="margin-top: 10px; padding-left: 20px"
+          ></ul>
+        </div>
+
+        <button id="generateTextBtn" onclick="generateText()">Generate</button>
+      </div>
+
       <h3>3. Integrate API with your language</h3>
       <p>
         If you want to integrate with the programming languages you are using,

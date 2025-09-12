@@ -1060,6 +1060,218 @@ class Program {
       `.trim(),
     },
   ],
+  text_gen: [
+    {
+      lang: "javascript",
+      label: "Javascript",
+      code: `
+import axios from "axios";
+import FormData from "form-data";
+import fs from "fs";
+
+async function generateText() {
+  const formData = new FormData();
+  formData.append("prompt", "Introducing the most powerful AI models today");
+  formData.append("model", "gemini-2.5-pro");
+  formData.append("system_instruction", "string");
+  formData.append("thinking_budget", "0");
+  formData.append("temperature", "0.7");
+
+  // Thay vì string, gắn file thực tế
+  formData.append("images", fs.createReadStream("./files/sample.png"));
+  formData.append("audio_files", fs.createReadStream("./files/sample.mp3"));
+  formData.append("document_files", fs.createReadStream("./files/sample.pdf"));
+  formData.append("videos", fs.createReadStream("./files/sample.mp4"));
+
+  try {
+    const response = await axios.post(
+      "https://api-dev.geminigen.ai/uapi/v1/text/generate",
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          Accept: "application/json",
+          "x-api-key": "your_api_key"
+        }
+      }
+    );
+    console.log(response.data);
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
+}
+
+generateText();
+
+
+      `.trim(),
+    },
+    {
+      lang: "java",
+      label: "Java",
+      code: `
+import java.net.http.*;
+import java.net.URI;
+import java.io.*;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.nio.file.Path;
+
+public class GenerateText {
+    public static void main(String[] args) throws Exception {
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api-dev.geminigen.ai/uapi/v1/text/generate"))
+            .header("Accept", "application/json")
+            .header("x-api-key", "your_api_key")
+            .POST(ofMimeMultipartData())
+            .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+
+    private static HttpRequest.BodyPublisher ofMimeMultipartData() throws IOException {
+        var boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
+        var byteArrays = new java.util.ArrayList<byte[]>();
+
+        String payload = ""
+            + "--" + boundary + "\r\n"
+            + "Content-Disposition: form-data; name=\"prompt\"\r\n\r\n"
+            + "Introducing the most powerful AI models today\r\n"
+            + "--" + boundary + "\r\n"
+            + "Content-Disposition: form-data; name=\"model\"\r\n\r\n"
+            + "gemini-2.5-pro\r\n"
+            + "--" + boundary + "\r\n"
+            + "Content-Disposition: form-data; name=\"images\"; filename=\"sample.png\"\r\n"
+            + "Content-Type: image/png\r\n\r\n";
+
+        byteArrays.add(payload.getBytes());
+        byteArrays.add(java.nio.file.Files.readAllBytes(Path.of("files/sample.png")));
+        byteArrays.add(("\r\n--" + boundary + "--\r\n").getBytes());
+
+        return BodyPublishers.ofByteArrays(byteArrays);
+    }
+}
+
+      `.trim(),
+    },
+    {
+      lang: "python",
+      label: "Python",
+      code: `
+import requests
+
+url = "https://api-dev.geminigen.ai/uapi/v1/text/generate"
+headers = {
+    "Accept": "application/json",
+    "x-api-key": "your_api_key"
+}
+
+files = {
+    "images": open("files/sample.png", "rb"),
+    "audio_files": open("files/sample.mp3", "rb"),
+    "document_files": open("files/sample.pdf", "rb"),
+    "videos": open("files/sample.mp4", "rb"),
+}
+
+data = {
+    "prompt": "Introducing the most powerful AI models today",
+    "model": "gemini-2.5-pro",
+    "system_instruction": "string",
+    "thinking_budget": "0",
+    "temperature": "0.7"
+}
+
+response = requests.post(url, headers=headers, files=files, data=data)
+print(response.json())
+
+
+      `.trim(),
+    },
+    {
+      lang: "php",
+      label: "PHP",
+      code: `
+&lt;?php
+$ch = curl_init();
+
+$cfile_image = new CURLFile("files/sample.png");
+$cfile_audio = new CURLFile("files/sample.mp3");
+$cfile_doc   = new CURLFile("files/sample.pdf");
+$cfile_video = new CURLFile("files/sample.mp4");
+
+$data = [
+    "prompt" => "Introducing the most powerful AI models today",
+    "model" => "gemini-2.5-pro",
+    "system_instruction" => "string",
+    "thinking_budget" => "0",
+    "temperature" => "0.7",
+    "images" => $cfile_image,
+    "audio_files" => $cfile_audio,
+    "document_files" => $cfile_doc,
+    "videos" => $cfile_video
+];
+
+curl_setopt_array($ch, [
+    CURLOPT_URL => "https://api-dev.geminigen.ai/uapi/v1/text/generate",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => $data,
+    CURLOPT_HTTPHEADER => [
+        "Accept: application/json",
+        "x-api-key: your_api_key"
+    ]
+]);
+
+$response = curl_exec($ch);
+if (curl_errno($ch)) {
+    echo "Error: " . curl_error($ch);
+}
+curl_close($ch);
+
+echo $response;
+
+      `.trim(),
+    },
+    {
+      lang: "csharp",
+      label: "C#",
+      code: `
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program {
+    static async Task Main() {
+        using var client = new HttpClient();
+        using var form = new MultipartFormDataContent();
+
+        form.Add(new StringContent("Introducing the most powerful AI models today"), "prompt");
+        form.Add(new StringContent("gemini-2.5-pro"), "model");
+        form.Add(new StringContent("string"), "system_instruction");
+        form.Add(new StringContent("0"), "thinking_budget");
+        form.Add(new StringContent("0.7"), "temperature");
+
+        // File uploads
+        form.Add(new StreamContent(File.OpenRead("files/sample.png")), "images", "sample.png");
+        form.Add(new StreamContent(File.OpenRead("files/sample.mp3")), "audio_files", "sample.mp3");
+        form.Add(new StreamContent(File.OpenRead("files/sample.pdf")), "document_files", "sample.pdf");
+        form.Add(new StreamContent(File.OpenRead("files/sample.mp4")), "videos", "sample.mp4");
+
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-dev.geminigen.ai/uapi/v1/text/generate") {
+            Headers = { { "Accept", "application/json" }, { "x-api-key", "your_api_key" } },
+            Content = form
+        };
+
+        var response = await client.SendAsync(request);
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+    }
+}
+      `.trim(),
+    },
+  ],
 };
 
 // Copy function
@@ -1160,10 +1372,12 @@ document.querySelector("#vertify-webhook-data-tabs-container").innerHTML =
   renderTabs("vertify_webhook_data") + renderContents("vertify_webhook_data");
 document.querySelector("#video-tabs-container").innerHTML =
   renderTabs("video") + renderContents("video");
-  document.querySelector("#tts-tabs-container").innerHTML =
+document.querySelector("#tts-tabs-container").innerHTML =
   renderTabs("tts") + renderContents("tts");
-    document.querySelector("#dts-tabs-container").innerHTML =
+document.querySelector("#dts-tabs-container").innerHTML =
   renderTabs("dts") + renderContents("dts");
-      document.querySelector("#tts-multi-speaker-tabs-container").innerHTML =
+document.querySelector("#tts-multi-speaker-tabs-container").innerHTML =
   renderTabs("tts_multi_speaker") + renderContents("tts_multi_speaker");
+document.querySelector("#text-gen-tabs-container").innerHTML =
+  renderTabs("text_gen") + renderContents("text_gen");
 attachTabEvents();

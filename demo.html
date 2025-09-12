@@ -383,7 +383,7 @@
   }
 }
         </code></pre>
-              <h3>6. Dialogue Gen</h3>
+      <h3>6. Dialogue Gen</h3>
       <p>
         The code below we only include required parameters. There are many other
         fine-tuning parameters you can see more
@@ -455,6 +455,84 @@
     "created_at": "2025-08-31T09:19:14",
     "updated_at": "2025-08-31T09:19:36",
     "media_url": "https://87c129bea46e5e69d2d92f9b9ef83ca8.r2.cloudflarestorage.com/geminigen-prd-upload-bucket/31/generated_result/audio/20250831_091919_007294/Voice_1__Hello_world__I_am_Long.mp3?response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=852af3549a421613746f7c16fc8699f5%2F20250831%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250831T091938Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e8f610edeb59a3792f65c3dad5d01d6efc38d998b610aaf14d4208f11debef62"
+  }
+}
+        </code></pre>
+      <h3>6. Text Gen</h3>
+      <p>
+        The code below we only include required parameters. There are many other
+        fine-tuning parameters you can see more
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://docs.geminigen.ai/getting-started"
+          >here</a
+        >.
+      </p>
+      <div id="text-gen-tabs-container"></div>
+      <p>The returned response data format will be (JSON):</p>
+
+      <pre><code class="language-json">
+{
+    "negative_prompt": null,
+    "status_percentage": 1,
+    "file_password": "",
+    "created_by": "API",
+    "service_mode": null,
+    "input_file_path": null,
+    "rating": "",
+    "error_code": "",
+    "is_premium_credit": 1,
+    "created_at": "2025-09-12T11:26:58",
+    "uuid": "64c80512-8fcb-11f0-89ba-02083500aad5",
+    "generate_result": null,
+    "rating_content": "",
+    "error_message": "",
+    "is_emotion_failed": 0,
+    "updated_at": null,
+    "id": 1711,
+    "type": "text",
+    "generate_job_id": null,
+    "expired_at": null,
+    "emotion": null,
+    "deleted_at": null,
+    "user_id": 47,
+    "estimated_credit": 0,
+    "custom_prompt": "",
+    "provider": "google",
+    "media_type": "text",
+    "model": "gemini-2.5-pro",
+    "used_credit": 0,
+    "note": null,
+    "inference_type": null,
+    "thumbnail_url": null,
+    "model_name": "gemini-2.5-pro",
+    "status": 1,
+    "file_size": 0,
+    "name": null,
+    "template_id": null,
+    "input_text": "Introducing the most powerful AI models today",
+    "status_desc": "",
+    "ai_credit": 0,
+    "key_provider": null
+}
+      </code></pre>
+      <p>The data request to your webhook will be in the form(JSON):</p>
+      <pre><code class="language-json">
+{
+  "event_name": "TEXT_GENERATION_COMPLETED",
+  "event_uuid": "7b94f2f0-8fcb-11f0-89ba-02083500aad5",
+  "data": {
+    "uuid": "64c80512-8fcb-11f0-89ba-02083500aad5",
+    "model_name": "gemini-2.5-pro",
+    "input_text": "Introducing the most powerful AI models today",
+    "used_credit": 410,
+    "status": 2,
+    "status_percentage": 100,
+    "error_message": "",
+    "response_text": "Of course. The landscape of AI is moving at a breathtaking pace, with new \"most powerful\" models being announced every few months. As of mid-2024, the field is dominated by a few key players who are pushing the boundaries of what's possible.\n\nHere's an introduction to the most powerful and influential AI models today, broken down by category.\n\n---\n\n### The Titans: The Flagship General-Purpose Models\n\nThese are the all-encompassing, multimodal models from the major AI labs that compete for the title of \"the best.\" They excel at a wide range of tasks, including reasoning, conversation, and content creation across text, images, and audio.\n\n#### 1. **OpenAI's GPT-4o (\"o\" for Omni)**\n*   **What Makes it Powerful:** GPT-4o is OpenAI's latest flagship model and represents a massive leap in usability and multimodality. Its key innovation is being a single, natively multimodal model. Instead of separate models for text, vision, and audio, GPT-4o processes everything seamlessly. This allows for incredibly fast, real-time voice and vision conversations that feel natural and human-like.\n*   **Key Strengths:**\n    *   **Speed and Efficiency:** It's significantly faster and cheaper to run than its predecessor, GPT-4 Turbo.\n    *   **Real-Time Multimodality:** Can understand and respond to a combination of text, audio, and images in real-time. You can talk to it, show it things via your camera, and it responds instantly.\n    *   **Emotional Nuance in Voice:** The voice assistant can generate speech with different emotional tones (laughing, singing, etc.), making interaction far more engaging.\n*   **Best For:** Real-time problem solving, natural voice assistance, and interactive creative collaboration.\n\n#### 2. **Google's Gemini 1.5 Pro**\n*   **What Makes it Powerful:** Google's champion is built on a \"Mixture-of-Experts\" (MoE) architecture, making it highly efficient. Its standout feature is an absolutely massive context window. While most models handle thousands of tokens (words/pieces of words), Gemini 1.5 Pro can process **1 million tokens**—equivalent to an entire movie, multiple long books, or a large codebase.\n*   **Key Strengths:**\n    *   **Massive Context Window:** Can analyze and reason over vast amounts of information provided in a single prompt. You can \"drop in\" a 500-page PDF and ask detailed questions about it.\n    *   **Advanced Multimodal Reasoning:** Excels at analyzing video content frame-by-frame, finding specific moments, and answering complex questions about what's happening.\n    *   **High Performance at Scale:** Maintains high accuracy even when processing enormous amounts of data.\n*   **Best For:** Deep analysis of large documents, video content analysis, and complex code review.\n\n#### 3. **Anthropic's Claude 3 Opus**\n*   **What Makes it Powerful:** Claude 3 Opus is renowned for its exceptional performance in complex reasoning, analytical tasks, and generating sophisticated, high-quality written content. It was one of the first models to consistently outperform GPT-4 on several key industry benchmarks upon its release. Anthropic also places a strong emphasis on AI safety and ethics.\n*   **Key Strengths:**\n    *   **Superior Reasoning and Analysis:** Often considered the \"thinking\" model, it excels at tasks requiring deep understanding, like financial analysis, interpreting scientific papers, and creative writing.\n    *   **Reduced \"Refusals\":** It's better at understanding context and is less likely to refuse to answer prompts that are safe but might border on a sensitive topic.\n    *   **Strong Vision Capabilities:** Can analyze charts, graphs, and images with high accuracy.\n*   **Best For:** Professional writing, business analysis, academic research, and tasks requiring nuanced understanding.\n\n---\n\n### The Open-Source Champions\n\nThese models are \"free\" to be downloaded, modified, and used by developers and companies, fostering a massive wave of innovation outside the big tech labs.\n\n#### 1. **Meta's Llama 3**\n*   **What Makes it Powerful:** Llama 3 is the current king of open-source models. Meta trained it on a colossal, high-quality dataset, resulting in state-of-the-art performance that competes with—and sometimes surpasses—proprietary models like GPT-3.5 and even early versions of GPT-4. It comes in several sizes (8B and 70B parameters) to fit different needs.\n*   **Key Strengths:**\n    *   **Top-Tier Performance:** The 70B model is incredibly capable at reasoning, coding, and instruction following.\n    *   **Permissive License:** Allows for commercial use, making it the go-to choice for startups and companies building their own AI products.\n*   **Best For:** Developers building custom AI applications, researchers, and companies wanting to host their own powerful models.\n\n#### 2. **Mistral AI's Mistral Large & Mixtral 8x22B**\n*   **What Makes it Powerful:** Paris-based Mistral AI has quickly become a major force. Their models are known for their efficiency and top-tier performance. They use a Mixture-of-Experts (MoE) architecture, which means only parts of the model are activated for any given task, making them much faster and cheaper to run than monolithic models of a similar size.\n*   **Key Strengths:**\n    *   **Efficiency:** Delivers incredible performance for its computational cost.\n    *   **Multilingual:** Strong native support for multiple languages.\n*   **Best For:** Applications requiring a balance of high performance and cost-effectiveness.\n\n---\n\n### The Specialized Powerhouses\n\nThese models are designed to be the best in the world at one specific thing.\n\n#### **Image Generation**\n*   **Midjourney v6:** Widely considered the leader for artistic quality, photorealism, and creating stunning, aesthetically pleasing images. It has a deep understanding of art styles, composition, and lighting.\n*   **DALL-E 3 (OpenAI):** Its power comes from its deep integration with ChatGPT. You can describe what you want in natural, conversational language, and it excels at following complex instructions and rendering text accurately.\n*   **Stable Diffusion 3 (Stability AI):** The most powerful *open-source* image model. It's incredibly versatile and customizable, allowing developers to fine-tune it for specific styles and applications.\n\n#### **Video Generation**\n*   **OpenAI's Sora:** While not yet publicly available, Sora has redefined what's possible in AI video. It can generate high-fidelity, coherent video clips up to a minute long from a simple text prompt, demonstrating a sophisticated understanding of the physical world.\n*   **Runway Gen-3 & Pika Labs:** The leading publicly available tools for creating high-quality, short video clips from text or images.\n\n#### **Scientific Discovery**\n*   **Google DeepMind's AlphaFold 3:** A monumental achievement. This model can predict the structure and interactions of nearly all of life's molecules (proteins, DNA, etc.) with incredible accuracy. Its power isn't in chatting, but in revolutionizing drug discovery and biological research.\n\n### Summary Table\n\n| Model Name       | Developer       | Key Feature                                     | Type              |\n| ---------------- | --------------- | ----------------------------------------------- | ----------------- |\n| **GPT-4o**       | OpenAI          | Real-time, seamless voice/vision interaction    | Proprietary/Closed |\n| **Gemini 1.5 Pro** | Google          | Massive 1 million token context window          | Proprietary/Closed |\n| **Claude 3 Opus**  | Anthropic       | Elite-level reasoning and analytical depth      | Proprietary/Closed |\n| **Llama 3**        | Meta            | State-of-the-art open-source performance        | Open-Source       |\n| **Midjourney v6**  | Midjourney, Inc. | Unmatched artistic and photorealistic quality   | Proprietary/Closed |\n| **Sora**           | OpenAI          | Hyper-realistic and coherent AI video generation | In Preview        |\n| **AlphaFold 3**    | Google DeepMind | Predicts the structure of all life's molecules  | Research Tool     |",
+    "created_at": "2025-09-12T11:26:58",
+    "updated_at": "2025-09-12T11:27:35"
   }
 }
         </code></pre>
