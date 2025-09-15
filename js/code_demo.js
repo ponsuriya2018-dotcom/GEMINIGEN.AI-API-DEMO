@@ -160,9 +160,6 @@ const headers = {
 const data = {
   prompt: "A serene lake surrounded by mountains at sunset with gentle waves",
   model: "veo-3",
-  enhance_prompt: true,
-  resolution: "720p",
-  duration: 5,
   aspect_ratio: "16:9"
 };
 
@@ -191,9 +188,6 @@ public class Main {
         {
             "prompt": "A serene lake surrounded by mountains at sunset with gentle waves",
             "model": "veo-3",
-            "enhance_prompt": true,
-            "resolution": "720p",
-            "duration": 5,
             "aspect_ratio": "16:9"
         }
         """;
@@ -225,9 +219,6 @@ headers = {
 data = {
     "prompt": "A serene lake surrounded by mountains at sunset with gentle waves",
     "model": "veo-3",
-    "enhance_prompt": True,
-    "resolution": "720p",
-    "duration": 5,
     "aspect_ratio": "16:9"
 }
 
@@ -245,9 +236,6 @@ $url = "https://api.geminigen.ai/uapi/v1/video-gen/veo";
 $data = [
     "prompt" => "A serene lake surrounded by mountains at sunset with gentle waves",
     "model" => "veo-3",
-    "enhance_prompt" => true,
-    "resolution" => "720p",
-    "duration" => 5,
     "aspect_ratio" => "16:9"
 ];
 
@@ -285,9 +273,6 @@ class Program {
         var json = @"{
             ""prompt"": ""A serene lake surrounded by mountains at sunset with gentle waves"",
             ""model"": ""veo-3"",
-            ""enhance_prompt"": true,
-            ""resolution"": ""720p"",
-            ""duration"": 5,
             ""aspect_ratio"": ""16:9""
         }";
 
@@ -1345,7 +1330,7 @@ function attachTabEvents() {
       if (activeContent) activeContent.classList.add("active");
 
       // Đồng bộ các group khác
-      ["img", "vertify_webhook_data", "video", "tts", "dts"].forEach((g) => {
+      ["img", "vertify_webhook_data", "video", "tts", "dts", "tts_multi_speaker", "text_gen"].forEach((g) => {
         if (g !== group) {
           document
             .querySelectorAll(`.tab[data-group="${g}"]`)

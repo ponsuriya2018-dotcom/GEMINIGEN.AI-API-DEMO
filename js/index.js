@@ -158,7 +158,7 @@ const imageGenStyleSelect = document.getElementById("imageGenStyle");
 const imageGenModelSelect = document.getElementById("imageGenModel");
 const videoGenModelSelect = document.getElementById("videoGenModel");
 const videoResolutionSelect = document.getElementById("videoResolution");
-const enhancePromptSelect = document.getElementById("enhancePrompt");
+// const enhancePromptSelect = document.getElementById("enhancePrompt");
 const videoAspectRatioSelect = document.getElementById("videoAspectRatio");
 const ttsModelSelect = document.getElementById("ttsModel");
 const ttsOutputFormatSelect = document.getElementById("ttsOutputFormat");
@@ -206,14 +206,14 @@ Object.keys(IMAGE_GEN_MODELS).forEach((style, index) => {
   imageGenModelSelect.appendChild(option);
 });
 
-// Render video model option từ mảng
-Object.keys(ENHANCE_PROMPT).forEach((style, index) => {
-  const option = document.createElement("option");
-  option.value = style.toLowerCase(); // value có thể là chữ thường
-  option.text = style; // hiển thị tên
-  if (index === 0) option.selected = true; // mặc định chọn cái đầu
-  enhancePromptSelect.appendChild(option);
-});
+// // Render video model option từ mảng
+// Object.keys(ENHANCE_PROMPT).forEach((style, index) => {
+//   const option = document.createElement("option");
+//   option.value = style.toLowerCase(); // value có thể là chữ thường
+//   option.text = style; // hiển thị tên
+//   if (index === 0) option.selected = true; // mặc định chọn cái đầu
+//   enhancePromptSelect.appendChild(option);
+// });
 
 Object.keys(VIDEO_GEN_MODELS).forEach((style, index) => {
   const option = document.createElement("option");
@@ -470,17 +470,17 @@ async function generateVideo() {
   generateBtn.textContent = "Generating...";
 
   const genImageUrl = BACKEND_URL + "/uapi/v1/video-gen/veo";
-  const negativePrompt =
-    document.getElementById("negativePromptGenVideo").value.trim() || null;
+  // const negativePrompt =
+  //   document.getElementById("negativePromptGenVideo").value.trim() || null;
   const model =
     VIDEO_GEN_MODELS[
       videoGenModelSelect.options[videoGenModelSelect.selectedIndex].text
     ];
   const videoGenDuration = document.getElementById("videoGenDuration").value;
-  const enhancePrompt =
-    ENHANCE_PROMPT[
-      enhancePromptSelect.options[enhancePromptSelect.selectedIndex].text
-    ];
+  // const enhancePrompt =
+  //   ENHANCE_PROMPT[
+  //     enhancePromptSelect.options[enhancePromptSelect.selectedIndex].text
+  //   ];
   const videoResolution =
     videoResolutionSelect.options[videoResolutionSelect.selectedIndex].text;
   const videoAspectRatio =
@@ -490,8 +490,8 @@ async function generateVideo() {
   const formData = new FormData();
   formData.append("prompt", prompt);
   formData.append("model", model);
-  formData.append("enhance_prompt", enhancePrompt);
-  formData.append("negative_prompt", negativePrompt);
+  // formData.append("enhance_prompt", enhancePrompt);
+  // formData.append("negative_prompt", negativePrompt);
   formData.append("duration", videoGenDuration);
   formData.append("resolution", videoResolution);
   formData.append("aspect_ratio", videoAspectRatio);

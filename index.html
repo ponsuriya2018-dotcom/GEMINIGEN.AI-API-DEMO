@@ -244,11 +244,11 @@
           placeholder="Describe what you want to generate..."
         ></textarea>
 
-        <label for="negativePromptGenVideo">Negative prompt</label>
+        <!-- <label for="negativePromptGenVideo">Negative prompt</label>
         <textarea
           id="negativePromptGenVideo"
           placeholder="Describe what you don't want to see in the video"
-        ></textarea>
+        ></textarea> -->
 
         <div style="display: flex; gap: 20px; width: 100%">
           <div style="flex: 1; margin-top: 15px">
@@ -267,24 +267,26 @@
               value="8"
               min="1"
               id="videoGenDuration"
+              disabled
             />
           </div>
         </div>
 
         <div style="display: flex; gap: 20px; width: 100%">
-          <div style="flex: 1; margin-top: 15px">
+          <!-- <div style="flex: 1; margin-top: 15px">
             <label for="enhancePrompt">Enhance prompt</label>
             <select
               id="enhancePrompt"
               style="width: 100%; margin-top: 16px"
             ></select>
-          </div>
+          </div> -->
 
           <div style="flex: 1; margin-top: 15px">
             <label for="videoResolution">Resolution</label>
             <select
               id="videoResolution"
               style="width: 100%; margin-top: 16px"
+              disabled
             ></select>
           </div>
           <div style="flex: 1; margin-top: 15px">
