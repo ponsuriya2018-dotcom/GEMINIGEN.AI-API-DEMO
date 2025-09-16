@@ -29,8 +29,12 @@ const IMAGE_GEN_MODELS = {
   "Imagen 4 Ultra": "imagen-4-ultra",
   "Imagen 4 Fast": "imagen-4-fast",
   "Imagen 4": "imagen-4",
-  "Gemini 2.0 Flash": "imagen-flash",
+  "Nano Banana(Gemini 2.5 Flash image)": "imagen-flash",
 };
+
+const IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE = [
+  "imagen-flash",
+]
 
 const VIDEO_GEN_MODELS = {
   "Veo 3": "veo-3",
@@ -200,11 +204,19 @@ IMAGE_GEN_STYLES.forEach((style, index) => {
 // Render option từ mảng
 Object.keys(IMAGE_GEN_MODELS).forEach((style, index) => {
   const option = document.createElement("option");
-  option.value = style.toLowerCase(); // value có thể là chữ thường
+  option.value = IMAGE_GEN_MODELS[style]; // value có thể là chữ thường
   option.text = style; // hiển thị tên
   if (index === 0) option.selected = true; // mặc định chọn cái đầu
   imageGenModelSelect.appendChild(option);
 });
+
+// Lắng nghe sự kiện change
+imageGenModelSelect.addEventListener("change", (e) => {
+  toggleImageReferenceContainer(e.target.value);
+});
+
+// Gọi lần đầu để set trạng thái đúng theo option mặc định
+toggleImageReferenceContainer(imageGenModelSelect.value);
 
 // // Render video model option từ mảng
 // Object.keys(ENHANCE_PROMPT).forEach((style, index) => {
@@ -1154,5 +1166,21 @@ async function generateText() {
     // Enable lại button khi xong
     generateBtn.disabled = false;
     generateBtn.textContent = "Generate";
+  }
+}
+
+function toggleImageReferenceContainer(modelValue) {
+  // tìm key đúng với model đang chọn
+  const selectedKey = Object.keys(IMAGE_GEN_MODELS).find(
+    (k) => IMAGE_GEN_MODELS[k] === modelValue
+  );
+  const selectedModelId = IMAGE_GEN_MODELS[selectedKey];
+
+  const container = document.getElementById("imageReferenceContainer");
+
+  if (IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE.includes(selectedModelId)) {
+    container.style.display = "block";
+  } else {
+    container.style.display = "none";
   }
 }
