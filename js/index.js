@@ -375,8 +375,8 @@ async function generateImage() {
     .innerText.trim();
   let selectedStyleText =
     imageGenStyleSelect.options[imageGenStyleSelect.selectedIndex].text;
-  const selectedModelText =
-    imageGenModelSelect.options[imageGenModelSelect.selectedIndex].text;
+  const model =
+    IMAGE_GEN_MODELS[imageGenModelSelect.options[imageGenModelSelect.selectedIndex].text];
   const uploadGenImageFile = document.getElementById("uploadGenImageFile");
   const imageGenRef = uploadGenImageFile.files[0];
 
@@ -388,13 +388,13 @@ async function generateImage() {
 
   const formData = new FormData();
   formData.append("prompt", prompt);
-  formData.append("model", IMAGE_GEN_MODELS[selectedModelText]);
+  formData.append("model", model);
   formData.append("aspect_ratio", aspectRatio);
 
   if (selectedStyleText !== "None") {
     formData.append("style", selectedStyleText);
   }
-  if (imageGenRef) {
+  if (imageGenRef && IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE.includes(model)) {
     formData.append("files", imageGenRef);
   }
 
