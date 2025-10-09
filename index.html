@@ -180,6 +180,70 @@
         <b style="border-bottom: 1px solid #ffa64d">Important</b>: We will count
         credits for each request you make.
       </p>
+
+      <h4>AI Video Generator</h4>
+      <p>
+        Create professional videos from text prompts using advanced AI models
+      </p>
+      <div class="gen-container">
+        <label for="apiKeyGenVideo">API Key</label>
+        <input
+          type="text"
+          id="apiKeyGenVideo"
+          placeholder="Enter your API key"
+        />
+
+        <label for="promptGenVideo">Prompt</label>
+        <textarea
+          id="promptGenVideo"
+          placeholder="Describe what you want to generate..."
+        ></textarea>
+
+        <!-- <label for="negativePromptGenVideo">Negative prompt</label>
+        <textarea
+          id="negativePromptGenVideo"
+          placeholder="Describe what you don't want to see in the video"
+        ></textarea> -->
+
+        <div style="display: flex; gap: 20px; width: 100%">
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoGenModel">Model</label>
+            <select
+              id="videoGenModel"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="videoAspectRatio">Aspect ratio</label>
+            <select
+              id="videoAspectRatio"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px" id="videoResolutionContainer">
+            <label for="videoResolution">Resolution</label>
+            <select
+              id="videoResolution"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+        </div>
+
+        <div style="margin-top: 15px">
+          <label for="uploadGenVideoFile">Image Reference</label>
+          <input
+            type="file"
+            id="uploadGenVideoFile"
+            accept="image/*"
+            style="margin-left: 8px"
+          />
+        </div>
+
+        <button id="generateVideoBtn" onclick="generateVideo()">
+          Generate
+        </button>
+      </div>
+
       <h4>AI Image Generator</h4>
       <p>Create stunning images from text prompts using advanced AI models.</p>
       <div class="gen-container">
@@ -225,93 +289,6 @@
         <button id="generateBtn" onclick="generateImage()">Generate</button>
       </div>
       <div class="preview" id="imagePreview"></div>
-
-      <h4>AI Video Generator</h4>
-      <p>
-        Create professional videos from text prompts using advanced AI models
-      </p>
-      <div class="gen-container">
-        <label for="apiKeyGenVideo">API Key</label>
-        <input
-          type="text"
-          id="apiKeyGenVideo"
-          placeholder="Enter your API key"
-        />
-
-        <label for="promptGenVideo">Prompt</label>
-        <textarea
-          id="promptGenVideo"
-          placeholder="Describe what you want to generate..."
-        ></textarea>
-
-        <!-- <label for="negativePromptGenVideo">Negative prompt</label>
-        <textarea
-          id="negativePromptGenVideo"
-          placeholder="Describe what you don't want to see in the video"
-        ></textarea> -->
-
-        <div style="display: flex; gap: 20px; width: 100%">
-          <div style="flex: 1; margin-top: 15px">
-            <label for="videoGenModel">Model</label>
-            <select
-              id="videoGenModel"
-              style="width: 100%; margin-top: 16px"
-            ></select>
-          </div>
-
-          <div style="flex: 1; margin-top: 15px">
-            <label for="videoGenDuration">Duration</label>
-            <input
-              type="number"
-              style="width: 100%; margin-top: 16px"
-              value="8"
-              min="1"
-              id="videoGenDuration"
-              disabled
-            />
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 20px; width: 100%">
-          <!-- <div style="flex: 1; margin-top: 15px">
-            <label for="enhancePrompt">Enhance prompt</label>
-            <select
-              id="enhancePrompt"
-              style="width: 100%; margin-top: 16px"
-            ></select>
-          </div> -->
-
-          <div style="flex: 1; margin-top: 15px">
-            <label for="videoResolution">Resolution</label>
-            <select
-              id="videoResolution"
-              style="width: 100%; margin-top: 16px"
-              disabled
-            ></select>
-          </div>
-          <div style="flex: 1; margin-top: 15px">
-            <label for="videoAspectRatio">Aspect ratio</label>
-            <select
-              id="videoAspectRatio"
-              style="width: 100%; margin-top: 16px"
-            ></select>
-          </div>
-        </div>
-
-        <div style="margin-top: 15px">
-          <label for="uploadGenVideoFile">Image Reference</label>
-          <input
-            type="file"
-            id="uploadGenVideoFile"
-            accept="image/*"
-            style="margin-left: 8px"
-          />
-        </div>
-
-        <button id="generateVideoBtn" onclick="generateVideo()">
-          Generate
-        </button>
-      </div>
 
       <h4>AI Speech Generator</h4>
       <p>Convert text to natural-sounding speech with 400+ AI voices</p>

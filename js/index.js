@@ -32,15 +32,15 @@ const IMAGE_GEN_MODELS = {
   "Nano Banana(Gemini 2.5 Flash image)": "imagen-flash",
 };
 
-const IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE = [
-  "imagen-flash",
-]
+const IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE = ["imagen-flash"];
 
 const VIDEO_GEN_MODELS = {
   "Veo 3": "veo-3",
   "Veo 3 Fast": "veo-3-fast",
   "Veo 2": "veo-2",
 };
+
+const VIDEO_GEN_MODEL_ALLOW_SELECT_RESOLUTION = ["veo-3", "veo-3-fast"];
 
 const ENHANCE_PROMPT = {
   On: true,
@@ -316,6 +316,22 @@ MIME_TYPES.forEach((style, index) => {
   textGenResponseMimeTypeSelect.appendChild(option);
 });
 
+videoGenModelSelect.addEventListener("change", () => {
+  if (
+    VIDEO_GEN_MODEL_ALLOW_SELECT_RESOLUTION.includes(
+      VIDEO_GEN_MODELS[
+        videoGenModelSelect.options[videoGenModelSelect.selectedIndex].text
+      ]
+    )
+  ) {
+    videoResolutionSelect.disabled = false;
+  } else {
+    videoResolutionSelect.disabled = true;
+    videoResolutionSelect.text = "720p";
+    videoResolutionSelect.value = "720p";
+  }
+});
+
 let videoUrls = [];
 
 function addVideoUrl() {
@@ -376,7 +392,9 @@ async function generateImage() {
   let selectedStyleText =
     imageGenStyleSelect.options[imageGenStyleSelect.selectedIndex].text;
   const model =
-    IMAGE_GEN_MODELS[imageGenModelSelect.options[imageGenModelSelect.selectedIndex].text];
+    IMAGE_GEN_MODELS[
+      imageGenModelSelect.options[imageGenModelSelect.selectedIndex].text
+    ];
   const uploadGenImageFile = document.getElementById("uploadGenImageFile");
   const imageGenRef = uploadGenImageFile.files[0];
 
@@ -394,7 +412,10 @@ async function generateImage() {
   if (selectedStyleText !== "None") {
     formData.append("style", selectedStyleText);
   }
-  if (imageGenRef && IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE.includes(model)) {
+  if (
+    imageGenRef &&
+    IMAGE_GEN_MODELS_ALLOW_SELECT_IMAGE_REFERENCE.includes(model)
+  ) {
     formData.append("files", imageGenRef);
   }
 
@@ -488,11 +509,6 @@ async function generateVideo() {
     VIDEO_GEN_MODELS[
       videoGenModelSelect.options[videoGenModelSelect.selectedIndex].text
     ];
-  const videoGenDuration = document.getElementById("videoGenDuration").value;
-  // const enhancePrompt =
-  //   ENHANCE_PROMPT[
-  //     enhancePromptSelect.options[enhancePromptSelect.selectedIndex].text
-  //   ];
   const videoResolution =
     videoResolutionSelect.options[videoResolutionSelect.selectedIndex].text;
   const videoAspectRatio =
@@ -502,9 +518,6 @@ async function generateVideo() {
   const formData = new FormData();
   formData.append("prompt", prompt);
   formData.append("model", model);
-  // formData.append("enhance_prompt", enhancePrompt);
-  // formData.append("negative_prompt", negativePrompt);
-  formData.append("duration", videoGenDuration);
   formData.append("resolution", videoResolution);
   formData.append("aspect_ratio", videoAspectRatio);
   if (imageGenRef) {
