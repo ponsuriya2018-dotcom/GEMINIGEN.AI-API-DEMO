@@ -4,8 +4,6 @@ const RESPONSE_MESSAGE_MAPPING = {
   500: "An unknown error occurred. Please try again.",
   401: "Incorrect API key",
 };
-
-const IMAGE_GEN_ASPECT_RATIOS = ["1:1", "3:4", "4:3", "16:9", "9:16"];
 const IMAGE_GEN_STYLES = [
   "None",
   "3D Render",
@@ -59,6 +57,13 @@ const VIDEO_GEN_ASPECT_RATIOS = ["16:9", "9:16"];
 GEN_TEXT_MODELS = {
   "gemini-2.5-flash": "gemini-2.5-flash",
   "gemini-2.5-pro": "gemini-2.5-pro",
+};
+
+const GEN_IMAGE_MODEL_RATIO_MAPPING = {
+  "imagen-4-ultra": ["1:1", "3:4", "4:3", "16:9", "9:16"],
+  "imagen-4-fast": ["1:1", "3:4", "4:3", "16:9", "9:16"],
+  "imagen-4": ["1:1", "3:4", "4:3", "16:9", "9:16"],
+  "imagen-flash": ["16:9", "9:16"],
 };
 
 const MIME_TYPES = [
@@ -157,9 +162,11 @@ const MIME_TYPES = [
   "application/octet-stream",
 ];
 
-const container = document.getElementById("aspectRatioContainer");
 const imageGenStyleSelect = document.getElementById("imageGenStyle");
 const imageGenModelSelect = document.getElementById("imageGenModel");
+const imageGenAspectRatioSelect = document.getElementById(
+  "imageGenAspectRatio"
+);
 const videoGenModelSelect = document.getElementById("videoGenModel");
 const videoResolutionSelect = document.getElementById("videoResolution");
 // const enhancePromptSelect = document.getElementById("enhancePrompt");
@@ -177,21 +184,6 @@ const textGenResponseMimeTypeSelect = document.getElementById(
   "textGenResponseMimeType"
 );
 
-IMAGE_GEN_ASPECT_RATIOS.forEach((ratio, index) => {
-  const div = document.createElement("div");
-  div.className = "aspect-option" + (index === 0 ? " active" : "");
-  div.innerText = ratio;
-
-  div.addEventListener("click", () => {
-    document
-      .querySelectorAll(".aspect-option")
-      .forEach((el) => el.classList.remove("active"));
-    div.classList.add("active");
-  });
-
-  container.appendChild(div);
-});
-
 // Render option từ mảng
 IMAGE_GEN_STYLES.forEach((style, index) => {
   const option = document.createElement("option");
@@ -208,11 +200,6 @@ Object.keys(IMAGE_GEN_MODELS).forEach((style, index) => {
   option.text = style; // hiển thị tên
   if (index === 0) option.selected = true; // mặc định chọn cái đầu
   imageGenModelSelect.appendChild(option);
-});
-
-// Lắng nghe sự kiện change
-imageGenModelSelect.addEventListener("change", (e) => {
-  toggleImageReferenceContainer(e.target.value);
 });
 
 // Gọi lần đầu để set trạng thái đúng theo option mặc định
@@ -332,6 +319,21 @@ videoGenModelSelect.addEventListener("change", () => {
   }
 });
 
+imageGenModelSelect.addEventListener("change", (e) => {
+  toggleImageReferenceContainer(e.target.value);
+  imageGenAspectRatioSelect.innerHTML = "";
+  GEN_IMAGE_MODEL_RATIO_MAPPING[e.target.value].forEach((style, index) => {
+    const option = document.createElement("option");
+    option.value = style.toLowerCase(); // value có thể là chữ thường
+    option.text = style; // hiển thị tên
+    if (index === 0) option.selected = true; // mặc định chọn cái đầu
+    imageGenAspectRatioSelect.appendChild(option);
+  });
+});
+
+// Call once when page loads
+imageGenModelSelect.dispatchEvent(new Event("change"));
+
 let videoUrls = [];
 
 function addVideoUrl() {
@@ -386,9 +388,9 @@ async function generateImage() {
 
   const genImageUrl = BACKEND_URL + "/uapi/v1/generate_image";
   const generateBtn = document.getElementById("generateBtn");
-  const aspectRatio = document
-    .querySelector(".aspect-option.active")
-    .innerText.trim();
+  const aspectRatio =
+    imageGenAspectRatioSelect.options[imageGenAspectRatioSelect.selectedIndex]
+      .text;
   let selectedStyleText =
     imageGenStyleSelect.options[imageGenStyleSelect.selectedIndex].text;
   const model =

@@ -256,10 +256,6 @@
           placeholder="Describe what you want to generate..."
         ></textarea>
 
-        <div style="margin-top: 15px">
-          <label>Aspect Ratio</label>
-          <div class="aspect-ratio" id="aspectRatioContainer"></div>
-        </div>
         <div style="display: flex; gap: 20px; width: 100%">
           <div style="flex: 1; margin-top: 15px">
             <label for="imageGenModel">Model</label>
@@ -273,6 +269,13 @@
             <label for="imageGenStyle">Style</label>
             <select
               id="imageGenStyle"
+              style="width: 100%; margin-top: 16px"
+            ></select>
+          </div>
+          <div style="flex: 1; margin-top: 15px">
+            <label for="imageGenAspectRatio">Aspect Ratio</label>
+            <select
+              id="imageGenAspectRatio"
               style="width: 100%; margin-top: 16px"
             ></select>
           </div>
