@@ -1,6 +1,0 @@
-Nội dung repo này
-1. Tạo 1 trang README.MD giới thiệu về geminigen.ai, giới thiệu các api
-2. Cung cấp 1 trang html home đơn giản, hướng dẫn user lấy API key từ geminigen.ai, sau khi paste key vào thì có thể test thử các api gen ảnh, gen video (gen video thì cần setting địa chỉ webhook)
-3. Trên trang html home, link đến 1 trang html đơn giản khác chứa code demo, hướng dẫn tích hợp và gọi api của geminigen.ai, bằng các ngôn ngữ như javascript, python, php
-4. Trang README.MD chứa link đến các trang html trên
-
