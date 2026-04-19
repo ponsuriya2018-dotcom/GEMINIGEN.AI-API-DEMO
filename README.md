@@ -28,4 +28,43 @@ We provide APIs to generate images/videos. Please follow the instructions below.
 
 ## 👋 Contributing
 GeminiGen AI always looking for new contributions. From documentation, contributing to our  reporting a bug; any contribution is valued and welcome. Are you interested in contributing to GeminiGen AI? Read our guide and get started with GeminiGen AI now!
+from flask import Flask, render_template, request
+import google.generativeai as genai
+
+app = Flask(__name__)
+
+genai.configure(api_key="ใส่ API KEY ตรงนี้")
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    result = ""
+
+    if request.method == "POST":
+        name = request.form["name"]
+        detail = request.form["detail"]
+        target = request.form["target"]
+
+        prompt = f"""
+คุณคือผู้เชี่ยวชาญขายของ TikTok
+
+สินค้า: {name}
+จุดเด่น: {detail}
+กลุ่มลูกค้า: {target}
+
+สร้าง:
+1.สคริปต์ขาย 15 วินาที
+2.Hook เปิดคลิป
+3.Caption
+4.Hashtag
+5.Prompt ทำคลิป AI
+"""
+
+        response = model.generate_content(prompt)
+        result = response.text
+
+    return render_template("index.html", result=result)
+
+app.run(debug=True)
 
